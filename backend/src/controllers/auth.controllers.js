@@ -5,6 +5,7 @@ import { User } from "../models/user.models.js";
 import { uploadOnCloudinary } from "../utlis/cloudinary.js";
 import sendEmail from "../utlis/sendEmail.js";
 import crypto from 'crypto'
+import jwt from "jsonwebtoken"
 
 const generateAccessAndRefreshToken=async (userId)=>{
     try {
@@ -145,11 +146,11 @@ const loginUser=asyncHandler (async (req,res)=>{
 const forgotPassword=asyncHandler (async (req,res)=>{
     const {email,username}=req.body;
 
-    if(!email && !username){
+    if(!(email || username)){
         throw new ApiError(400,"Email or username is required")
     }
 
-    const user=await user.findOne({
+    const user=await User.findOne({
         $or:[{username},{email}]
     })
 
@@ -157,23 +158,24 @@ const forgotPassword=asyncHandler (async (req,res)=>{
         throw new ApiError(400,'Email or username is not registered')
     }
 
+   
     const resetToken=await user.generatePasswordToken()
 
     await user.save()
 
-    const resetPasswordUrl=`{process.env.FRONTEND_URL}/reset-password/${resetToken}`
+    const resetPasswordUrl=`${process.env.FRONTEND_URL}/reset-password/${resetToken}`
     const subject="Reset Password"
     const message=`You can reset your password by clicking <a href=${resetPasswordUrl} target="_blank">Reset Your Password</a>\nIf the above link does not work for some reason then copy paste this link in a tab ${resetPasswordUrl}.\nif you have not requested this, kindly ignore ` 
 
     console.log(resetPasswordUrl);
     try {
-        await sendEmail(email,subject,message)
+        await sendEmail(email || user.email,subject,message)
 
        return res.status(200).json(
             new ApiResponse(
                 200,
                 {},
-                `Reset password token has been sent to ${email} successfully`
+                `Reset password token has been sent to ${email || user.email} successfully`
             )
         )
     } catch (error) {
@@ -182,7 +184,7 @@ const forgotPassword=asyncHandler (async (req,res)=>{
 
         await user.save({validateBeforeSave:false})
 
-        throw new ApiError(500,e.message)
+        throw new ApiError(500,error.message)
     }
 
 
@@ -191,6 +193,8 @@ const forgotPassword=asyncHandler (async (req,res)=>{
 const resetPassword=asyncHandler (async (req,res)=>{
      const {resetToken}=req.params;
      const password=req.body;
+     console.log(resetToken);
+     console.log(password);
 
      const forgetPasswordToken=crypto
                                     .createHash('sha256')

@@ -19,7 +19,7 @@ router.route("/register").post(
 
 router.route("/login").post(loginUser)
 router.route("/forget-password").post(forgotPassword)
-router.route("/reset-password").put(resetPassword)
+router.route("/reset-password/:resetToken").patch(resetPassword)
 router.route("/refresh-token").post(refreshAccessToken)
 
 export default router

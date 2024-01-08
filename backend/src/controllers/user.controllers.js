@@ -2,7 +2,6 @@ import { asyncHandler } from "../utlis/AsyncHander.js";
 import {ApiResponse} from '../utlis/ApiResponse.js'
 import { User } from "../models/user.models.js";
 import { ApiError } from "../utlis/ApiError.js";
-import jwt from "jsonwebtoken"
 import { uploadOnCloudinary } from "../utlis/cloudinary.js";
 import { Blog } from "../models/blog.models.js";
 
@@ -53,11 +52,16 @@ const logoutUser=asyncHandler(async (req,res)=>{
 
 
 const changePassword=asyncHandler (async (req,res)=>{
-    const {oldPasssword,newPassword}=req.body
+    const {oldPassword,newPassword}=req.body
+
+    if(!oldPassword || !newPassword){
+        throw new ApiError(404,"All fileds are required")
+    }
 
     const user=await User.findById(req.user._id)
 
-    const isPasswordCorrect=await user.isPasswordCorrect(oldPasssword)
+
+    const isPasswordCorrect=await user.isPasswordCorrect(oldPassword)
 
     if(!isPasswordCorrect){
         throw new ApiError(400,"Invalid old password")
