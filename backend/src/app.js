@@ -22,4 +22,9 @@ app.use(express.static("public"))
 
 app.use(cookieParser())
 
+//import route
+import indexRoute from './routes/index.js'
+
+app.use("/",indexRoute)
+
 export {app}
