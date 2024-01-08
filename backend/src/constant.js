@@ -1,1 +1,1 @@
-export const DB_Name="Blog Data"
+export const DB_Name="BlogAppData"
