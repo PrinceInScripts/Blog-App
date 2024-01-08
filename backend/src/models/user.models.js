@@ -27,13 +27,16 @@ const userSchema=new Schema({
         index:true
     },
     readList:{
-
+          type:Schema.Types.ObjectId,
+          ref:"Blog"
     },
     likes:{
-
+          type:Schema.Types.ObjectId,
+          ref:"Likes"
     },
     comments:{
-
+          type:Schema.Types.ObjectId,
+          ref:"Comment"
     },
     avatar:{
         type:String,   //cloundinary url
