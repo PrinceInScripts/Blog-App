@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { forgotPassword, loginuser, registerUser, resetPassword } from "../controllers/auth.controllers.js";
+import { forgotPassword, loginUser, registerUser, resetPassword } from "../controllers/auth.controllers.js";
 import { upload } from "../middelwares/multer.middelwares.js";
 
 const router=Router();
@@ -17,7 +17,7 @@ router.route("/register").post(
     ]),
     registerUser)
 
-router.route("/login").post(loginuser)
+router.route("/login").post(loginUser)
 router.route("/forget-password").post(forgotPassword)
 router.route("/reset-password").put(resetPassword)
 
