@@ -223,9 +223,51 @@ const resetPassword=asyncHandler (async (req,res)=>{
               )
 })
 
+const refreshAccessToken=asyncHandler (async(req,res)=>{
+    const inComingRefreshToken=req.cookies.refreshToken || req.body.refreshToken
+
+    if(!inComingRefreshToken){
+        throw new ApiError(401,"unathorized request")
+    }
+
+    try {
+        const decodedToken=jwt.verify(inComingRefreshToken,process.env.REFRESH_TOKEN_SECRET)
+
+        const user=await User.findById(decodedToken?._id)
+
+        if(!user){
+            throw new ApiError(401,"Invalid refresh token")
+        }
+
+        if(inComingRefreshToken !== user?.refreshToken){
+            throw new ApiError(401,"Refresh token is expired or used")
+        }
+
+        const {newrefreshToken,accessToken}=await generateAccessAndRefreshToken(user._id)
+
+        return res
+                 .status(200)
+                 .cookie("accessToken",accessToken,options)
+                 .cookie("refreshToken",newrefreshToken,options)
+                 .json(
+                    new ApiResponse(
+                        200,
+                    {accessToken,refreshToken:newrefreshToken},
+                    "Access token refreshed"
+                    )
+                    
+                 )
+    } catch (error) {
+        throw new ApiError(401,error?.message || "invalid refresh token")
+
+    }
+})
+
+
 export {
     registerUser,
     loginUser,
     forgotPassword,
-    resetPassword
+    resetPassword,
+    refreshAccessToken
 }

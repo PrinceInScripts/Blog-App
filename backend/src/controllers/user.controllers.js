@@ -1,6 +1,8 @@
 import { asyncHandler } from "../utlis/AsyncHander.js";
 import {ApiResponse} from '../utlis/ApiResponse.js'
 import { User } from "../models/user.models.js";
+import { ApiError } from "../utlis/ApiError.js";
+import jwt from "jsonwebtoken"
 
 const options={
     httpOnly:true,
@@ -46,6 +48,7 @@ const logoutUser=asyncHandler(async (req,res)=>{
                 )
               )
 })
+
 
 
 export {
