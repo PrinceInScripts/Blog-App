@@ -28,6 +28,6 @@ app.use(morgan('dev'))
 //import route
 import indexRoute from './routes/index.js'
 
-app.use("/",indexRoute)
+app.use("/api/v1",indexRoute)
 
 export {app}
