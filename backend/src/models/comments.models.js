@@ -13,12 +13,6 @@ const commentSchema=new Schema({
         type:Schema.Types.ObjectId,
         ref:"User"
     },
-    createdAt:{
-        type:Date
-    },
-    updatedAt:{
-        type:String
-    }
 },{timestamps:true})
 
 export const Comment=mongoose.model("Comment",commentSchema)

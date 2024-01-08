@@ -1,6 +1,7 @@
 import mongoose,{Schema} from 'mongoose'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import crypto from 'crypto'
 
 
 const userSchema=new Schema({
@@ -50,7 +51,7 @@ const userSchema=new Schema({
     },
     role:{
         type:String,
-        enum:["USER,ADMIN"]
+        enum:["USER","ADMIN"]
     },
     forgetPasswordToken:{
         type:String
@@ -65,7 +66,7 @@ const userSchema=new Schema({
 userSchema.pre("save",async function(next){
     if(!this.isModified("password")) return next()
 
-    this.password=await bcrypt(this.password,10)
+    this.password=await bcrypt.hash(this.password,10)
 
     next()
 })
@@ -102,14 +103,14 @@ userSchema.methods.generateRefreshToken=function (){
 }
 
 userSchema.methods.generatePasswordToken=function(){
-    const resetToken=crypto.randomBytes(20).toString('hex');
+    let resetToken=crypto.randomBytes(20).toString('hex');
 
-            this.forgotPasswordToken=crypto
+            this.forgetPasswordToken=crypto
                                      .createHash('sha256')
                                      .update(resetToken)
                                      .digest('hex')
 
-            this.forgotPasswordExpiry=Date.now() + 15 * 60 * 1000
+            this.forgetPasswordExpiry=Date.now() + 15 * 60 * 1000
 
             return resetToken;
 }

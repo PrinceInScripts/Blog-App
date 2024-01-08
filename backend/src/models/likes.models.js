@@ -9,10 +9,10 @@ const likesSchema=new Schema({
         type:Schema.Types.ObjectId,
         ref:"User"
     },
-    createdAt:Date,
-    updatedAt:Date,
     comment:{
         type:Schema.Types.ObjectId,
         ref:"Comment"
     }
 },{timestamps:true})
+
+export const Likes=mongoose.model("Likes",likesSchema)
