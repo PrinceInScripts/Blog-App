@@ -3,6 +3,8 @@ import { ApiError } from "../utlis/ApiError.js";
 import { ApiResponse } from "../utlis/ApiResponse.js";
 import { User } from "../models/user.models.js";
 import { uploadOnCloudinary } from "../utlis/cloudinary.js";
+import sendEmail from "../utlis/sendEmail.js";
+import crypto from 'crypto'
 
 const generateAccessAndRefreshToken=async (userId)=>{
     try {
@@ -140,7 +142,92 @@ const loginuser=asyncHandler (async (req,res)=>{
 
 })
 
+const forgotPassword=asyncHandler (async (req,res)=>{
+    const {email,username}=req.body;
+
+    if(!email && !username){
+        throw new ApiError(400,"Email or username is required")
+    }
+
+    const user=await user.findOne({
+        $or:[{username},{email}]
+    })
+
+    if(!user){
+        throw new ApiError(400,'Email or username is not registered')
+    }
+
+    const resetToken=await user.generatePasswordToken()
+
+    await user.save()
+
+    const resetPasswordUrl=`{process.env.FRONTEND_URL}/reset-password/${resetToken}`
+    const subject="Reset Password"
+    const message=`You can reset your password by clicking <a href=${resetPasswordUrl} target="_blank">Reset Your Password</a>\nIf the above link does not work for some reason then copy paste this link in a tab ${resetPasswordUrl}.\nif you have not requested this, kindly ignore ` 
+
+    console.log(resetPasswordUrl);
+    try {
+        await sendEmail(email,subject,message)
+
+       return res.status(200).json(
+            new ApiResponse(
+                200,
+                {},
+                `Reset password token has been sent to ${email} successfully`
+            )
+        )
+    } catch (error) {
+        user.forgetPasswordToken=undefined
+        user.forgetPasswordExpiry=undefined
+
+        await user.save()
+
+        throw new ApiError(500,e.message)
+    }
+
+
+})
+
+const resetPassword=asyncHandler (async (req,res)=>{
+     const {resetToken}=req.params;
+     const password=req.body;
+
+     const forgetPasswordToken=crypto
+                                    .createHash('sha256')
+                                    .update(resetToken)
+                                    .digest('hex')
+    
+     const user=await User.findOne({
+        forgetPasswordToken,
+        forgetPasswordExpiry:{$gt: Date.now()}
+     })
+
+     if(!user){
+        throw new ApiError("Token is inavlid o expired")
+     }
+
+     user.password=password
+     user.forgetPasswordToken=undefined
+     user.forgetPasswordExpiry=undefined
+
+     await user.save()
+
+     return res
+              .status(200)
+              .json(
+                new ApiResponse(
+                    200,
+                    {},
+                    "password changed sucessfully"
+                )
+              )
+})
+
+
+
 export {
     registerUser,
-    loginuser
+    loginuser,
+    forgotPassword,
+    resetPassword
 }
