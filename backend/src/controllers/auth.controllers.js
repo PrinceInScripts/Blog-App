@@ -93,7 +93,7 @@ const registerUser=asyncHandler (async (req,res)=>{
    )
 })
 
-const loginuser=asyncHandler (async (req,res)=>{
+const loginUser=asyncHandler (async (req,res)=>{
     //gert user detials from frontend | req.body -> data 
     //validation -user detials are empty?| username or email 
     //check user re exist or not
@@ -180,7 +180,7 @@ const forgotPassword=asyncHandler (async (req,res)=>{
         user.forgetPasswordToken=undefined
         user.forgetPasswordExpiry=undefined
 
-        await user.save()
+        await user.save({validateBeforeSave:false})
 
         throw new ApiError(500,e.message)
     }
@@ -210,7 +210,7 @@ const resetPassword=asyncHandler (async (req,res)=>{
      user.forgetPasswordToken=undefined
      user.forgetPasswordExpiry=undefined
 
-     await user.save()
+     await user.save({validateBeforeSave:false})
 
      return res
               .status(200)
@@ -223,11 +223,9 @@ const resetPassword=asyncHandler (async (req,res)=>{
               )
 })
 
-
-
 export {
     registerUser,
-    loginuser,
+    loginUser,
     forgotPassword,
     resetPassword
 }
