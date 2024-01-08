@@ -30,6 +30,10 @@ const userSchema=new Schema({
           type:Schema.Types.ObjectId,
           ref:"Blog"
     },
+    readListLength: {
+        type: Number,
+        default: 0
+    },
     likes:{
           type:Schema.Types.ObjectId,
           ref:"Likes"
@@ -63,7 +67,6 @@ const userSchema=new Schema({
         type:Date
     }
 },{timestamps:true})
-
 
 
 userSchema.pre("save",async function(next){

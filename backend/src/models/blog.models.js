@@ -1,6 +1,6 @@
 import mongoose,{Schema} from 'mongoose'
 import slugify from 'slugify'
-import comment from './comments.models.js'
+import {Comment} from './comments.models.js'
 
 const blogSchema=new Schema({
       title:{

@@ -4,6 +4,7 @@ import { User } from "../models/user.models.js";
 import { ApiError } from "../utlis/ApiError.js";
 import jwt from "jsonwebtoken"
 import { uploadOnCloudinary } from "../utlis/cloudinary.js";
+import { Blog } from "../models/blog.models.js";
 
 const options={
     httpOnly:true,
@@ -81,7 +82,7 @@ const changePassword=asyncHandler (async (req,res)=>{
 const updaterUserDetials=asyncHandler(async (req,res)=>{
     const {fullName,email}=req.body
 
-    if(!username || !email){
+    if(!fullName || !email){
         throw new ApiError(400,"All field are required")
     }
 
@@ -165,6 +166,67 @@ const updateUserCoverImage=asyncHandler(async (req,res)=>{
               )
 })
 
+const addBlogToReadList=asyncHandler(async (req,res)=>{
+    const {slug}=req.params
+
+    try {
+        const blog=await Blog.findOne({slug})
+        const user=await User.findById(req.user._id)
+
+        if(!user.readList.includes(blog._id)){
+            user.readList.push(blog._id)
+        }else{
+            const index=user.readList.indexOf(blog._id)
+            user.readList.splice(index,1)
+        }
+
+        user.readListLength=user.readList.readListLength
+        await user.save({validateBeforeSave:false})
+
+        const status=user.readList.includes(blog._id)
+
+        return res
+                  .status(200)
+                  .json(
+                    new ApiResponse(
+                        200,
+                        {
+                            blog,user,status
+                        },
+                        'Blog added/removed from read list successfully'
+                    )
+                  )
+    } catch (error) {
+        throw new ApiError(500, 'Internal Server Error');
+    }
+})
+
+const readListPage=asyncHandler(async (req,res)=>{
+    try {
+        const user=await User.findById(req.user._id)
+
+        const readList=[]
+
+        for(const blogId of user.readList){
+            const blog=await Blog.findById(blogId).populate('author')
+            readList.push(blog)
+        }
+
+        return res.status(200).json(
+            new ApiResponse(
+                200,
+                {
+                    readList
+                },
+                'Read list fetched successfully'
+            )
+        );
+
+    } catch (error) {
+        throw new ApiError(500, 'Internal Server Error');
+    }
+})
+
 
 export {
     getUser,
@@ -172,5 +234,7 @@ export {
     changePassword,
     updaterUserDetials,
     updateUserAvatar,
-    updateUserCoverImage
+    updateUserCoverImage,
+    addBlogToReadList,
+    readListPage
 }
