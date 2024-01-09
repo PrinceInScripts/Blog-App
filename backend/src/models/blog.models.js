@@ -57,11 +57,6 @@ blogSchema.pre("save",function (next){
   next()
 })
 
-blogSchema.post("save",async function (doc){
-  await doc.populate("comments").execPopulate();
-  doc.commentCount=doc.comments.length;
-  await doc.save()
-})
 
 blogSchema.methods.makeSlug=function (){
   return slugify(this.title,{
