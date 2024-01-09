@@ -1,3 +1,4 @@
+import mongoose from "mongoose"
 
 export const searchUtils=(async (searchKey,query,req)=>{
          if(req.query.search){
@@ -18,11 +19,13 @@ export const paginateUtils=async(model,query,req)=>{
 
     const regex=new RegExp(req.query.search,"i")
 
-    const total=await model.countDocument({title:regex})
+    const total=await model.countDocuments({title:regex})
 
     const pages=Math.ceil(total/pageSize)
 
-    query=query.skip(skip).limit(pageSize)
+    if (query instanceof mongoose.Query) {
+        query = query.skip(skip).limit(pageSize);
+    }    
 
     return {
         query:query,
