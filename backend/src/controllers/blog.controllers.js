@@ -177,7 +177,122 @@ const likeBlog = asyncHandler(async (req, res) => {
       throw new ApiError(500, "Internal Server Error");
     }
   });
-  
+
+const editBlogPage=asyncHandler(async (req,res)=>{
+    const {slug}=req.params;
+
+    const blog=await Blog.findOne({slug}).populate("author likes")
+
+    if(!blog){
+        throw new ApiError(404,"Blog Page not Found")
+    }
+
+    return res
+             .status(200)
+             .json(
+                new ApiResponse(
+                    200,
+                   { blog:blog},
+                   "Edit Page fetched Successfully"
+                )
+             )
+})
+
+const editBlogDetials=asyncHandler (async (req,res)=>{
+    const {slug}=req.params;
+    const {title,content}=req.body;
+
+    if(!title || !content){
+        throw new ApiError(404,"All fields are required")
+    }
+
+    const blog=await Blog.findOne({slug})
+
+    if(!blog){
+        throw new ApiError(404,"Blog Page not Found")
+    }
+
+    const editedBlog=await Blog.findByIdAndUpdate(
+        blog._id,
+        {
+            $set:{
+                $set:{
+                    fullName:fullName,
+                    content:content
+                }
+            }
+        },
+        {new:true}
+    )
+
+    return res
+             .status(200)
+             .json(
+                new ApiResponse
+                (200,
+                {blog:editedBlog},
+                "Blog edited Successfully")
+             )
+
+
+})
+
+const editBlogImage=asyncHandler(async (req,res)=>{
+    const {slug}=req.params;
+
+    const blog=await Blog.findOne({slug})
+    const imageLocalPath=req.file?.path
+
+    if(!imageLocalPath){
+        throw new ApiError(404,"Image is not found")
+    }
+
+    const image=await uploadOnCloudinary(imageLocalPath)
+
+    if(!image){
+        throw new ApiError(404,"Error on uploading image on clodinary")
+    }
+
+    const editedBlog=await Blog.findByIdAndUpdate(
+        blog._id,
+        {
+            $set:{
+                image:image?.url
+            }
+        },
+        {new:true}
+    )
+
+    return res
+             .status(200)
+             .json(
+                new ApiResponse
+                (200,
+                {blog:editedBlog},
+                "Blog edited Successfully")
+             )
+    
+})
+
+const deleteBlog=asyncHandler(async (req,res)=>{
+    const {slug}=req.params;
+
+    const blog=await Blog.findOne({slug})
+
+    if(!blog){
+        throw new ApiError(404,"Blog not found")
+    }
+
+    await blog.remove()
+
+    return res
+             .status(200)
+             .json(
+                200,
+                {},
+                "Blog deleted Successfully"
+             )
+})
   
 
 export {
@@ -185,5 +300,9 @@ export {
     getAllBlogs,
     getBlogsOfUser,
     getBlogDetials,
-    likeBlog
+    likeBlog,
+    editBlogPage,
+    editBlogDetials,
+    editBlogImage,
+    deleteBlog
 }
