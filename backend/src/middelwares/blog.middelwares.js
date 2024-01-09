@@ -1,5 +1,5 @@
 import {asyncHandler} from "../utlis/AsyncHander.js"
-import Blog from '../models/blog.models.js'
+import {Blog} from '../models/blog.models.js'
 import { ApiError } from "../utlis/ApiError.js";
 
 

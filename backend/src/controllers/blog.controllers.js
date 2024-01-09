@@ -116,8 +116,74 @@ const getBlogsOfUser=asyncHandler(async (req,res)=>{
 
 })
 
+const getBlogDetials=asyncHandler(async (req,res)=>{
+    const {slug}=req.params;
+    const activeUser=req.user;
+
+    const blog=await Blog.findOne({slug}).populate("author likes")
+
+    const blogLikeUserId=blog.likes && Array.isArray(blog.likes) ? blog.likes.map((user) => user.id) : [];
+    const likeStatus=blogLikeUserId.includes(activeUser._id)
+
+    return res
+             .status(200)
+             .json(
+                new ApiResponse(
+                    200,
+                    {
+                    blog:blog,
+                    likeStatus:likeStatus
+                    },
+                    "Blog Detials fetched Successfully"
+                )
+             )
+})
+
+const likeBlog = asyncHandler(async (req, res) => {
+    const { slug } = req.params;
+    const activeUser = req.user;
+  
+    try {
+      const blog = await Blog.findOne({ slug }).populate("author likes");
+  
+      if (!blog) {
+        throw new ApiError(404, "Blog not found");
+      }
+  
+      const currentBlog=await Blog.findById(blog._id)
+      const blogLikes=currentBlog.likes;
+     const hasUserLiked=  blogLikes.some((like) => like.toString() === activeUser._id.toString());
+      if (hasUserLiked) {
+         return res.status(200).json(
+          new ApiResponse(
+            200,
+            { blog: blog },
+            "User has already liked this blog"
+          )
+        );
+      } else {
+        blog.like(activeUser._id);
+  
+        return res.status(200).json(
+          new ApiResponse(
+            200,
+            { blog: blog },
+            "User liked the blog successfully"
+          )
+        );
+      }
+    } catch (error) {
+      console.error(error);
+      throw new ApiError(500, "Internal Server Error");
+    }
+  });
+  
+  
+
 export {
     createBlog,
     getAllBlogs,
-    getBlogsOfUser
+    getBlogsOfUser,
+    getBlogDetials,
+    likeBlog
 }

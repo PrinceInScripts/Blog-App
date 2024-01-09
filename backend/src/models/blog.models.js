@@ -1,6 +1,7 @@
 import mongoose,{Schema} from 'mongoose'
 import slugify from 'slugify'
 import {Comment} from './comments.models.js'
+import { Likes } from './likes.models.js'
 
 const blogSchema=new Schema({
       title:{
@@ -23,18 +24,22 @@ const blogSchema=new Schema({
           type:Schema.Types.ObjectId,
           ref:"Category"
       },
-      likes:{
+      likes:[
+        {
           type:Schema.Types.ObjectId,
           ref:"Likes"
-      },
+        }
+      ],
       author:{
            type:Schema.Types.ObjectId,
            ref:"User"
       },
-      comments:{
+      comments:[
+        {
           type:Schema.Types.ObjectId,
           ref:"Comment"
-      },
+        }
+      ],
       slug:{
         type:String,
         unique:true
@@ -70,7 +75,7 @@ blogSchema.methods.like=async function (userId){
   if(!this.likes.includes(userId)){
     this.likes.push(userId);
     this.likesCount=this.likes.length;
-    await this.save();
+    await this.save({validateBeforeSave:false});
   }
 }
 
@@ -78,13 +83,34 @@ blogSchema.methods.unlike=async function (userId){
   if(this.likes.includes(userId)){
     this.likes=this.likes.filter(like=>like.toString()!==userId.toString())
     this.likesCount=this.likes.length;
-    await this.save()
+    await this.save({validateBeforeSave:false})
   }
 }
 
-blogSchema.pre('remove',async function(next){
-  await Comment.deleteMany({blog:this._id})
-  next()
-})
+blogSchema.methods.addComment = async function (commentId) {
+  if (!this.comments.includes(commentId)) {
+    this.comments.push(commentId);
+    this.commentCount = this.comments.length;
+    await this.save();
+  }
+};
+
+blogSchema.methods.removeComment = async function (commentId) {
+  if (this.comments.includes(commentId)) {
+    this.comments = this.comments.filter((comment) => comment.toString() !== commentId.toString());
+    this.commentCount = this.comments.length;
+    await this.save();
+  }
+};
+
+blogSchema.pre("remove", async function (next) {
+  await Comment.deleteMany({ _id: { $in: this.comments } });
+  next();
+});
+
+
+
+
+
 
 export const Blog=mongoose.model("Blog",blogSchema)
