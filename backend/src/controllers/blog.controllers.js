@@ -154,15 +154,17 @@ const likeBlog = asyncHandler(async (req, res) => {
       const blogLikes=currentBlog.likes;
      const hasUserLiked=  blogLikes.some((like) => like.toString() === activeUser._id.toString());
       if (hasUserLiked) {
+        currentBlog.unlike(activeUser._id)
+
          return res.status(200).json(
           new ApiResponse(
             200,
             { blog: blog },
-            "User has already liked this blog"
+            "User unliked the blog successfully"
           )
         );
       } else {
-        blog.like(activeUser._id);
+        currentBlog.like(activeUser._id);
   
         return res.status(200).json(
           new ApiResponse(
@@ -216,10 +218,8 @@ const editBlogDetials=asyncHandler (async (req,res)=>{
         blog._id,
         {
             $set:{
-                $set:{
                     fullName:fullName,
                     content:content
-                }
             }
         },
         {new:true}
@@ -288,9 +288,11 @@ const deleteBlog=asyncHandler(async (req,res)=>{
     return res
              .status(200)
              .json(
-                200,
+                new ApiResponse(
+                    200,
                 {},
                 "Blog deleted Successfully"
+                )
              )
 })
   
