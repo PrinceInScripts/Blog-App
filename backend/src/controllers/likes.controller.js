@@ -1,5 +1,5 @@
 import { Blog } from "../models/blog.models.js";
-import { Likes } from "../models/likes.models.js";
+import { Likes } from "../models/blogLikes.models.js";
 import { ApiError } from "../utlis/ApiError.js";
 import { ApiResponse } from "../utlis/ApiResponse.js";
 import { asyncHandler } from "../utlis/AsyncHander.js";
@@ -23,7 +23,6 @@ const likeBlog=asyncHandler(async (req,res)=>{
     }
 
     const existingLike=await Likes.findOne({blog:blog._id,likedBy:userId})
-    console.log(existingLike);
 
     if(existingLike){
         return res

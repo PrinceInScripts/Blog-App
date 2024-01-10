@@ -1,5 +1,4 @@
 import {Blog}  from "../models/blog.models.js";
-import { Category } from "../models/category.models.js";
 import { User } from "../models/user.models.js";
 import { ApiError } from "../utlis/ApiError.js";
 import { ApiResponse } from "../utlis/ApiResponse.js";
@@ -14,7 +13,7 @@ const createBlog=asyncHandler(async (req,res)=>{
      const {title,content,category}=req.body
      const user=await User.findById(req.user._id)
 
-     if(!title || !content){
+     if(!title || !content || !category){
         throw new ApiError(400,"All fields are required")
      }
 
@@ -34,18 +33,13 @@ const createBlog=asyncHandler(async (req,res)=>{
         throw new ApiError(400,"the image is not uploaded on cloudinary")
      }
 
-     let blogCategory = await Category.findOne({ name: category });
-  if (!blogCategory) {
-    blogCategory = await Category.create({ name: category });
-  }
-
         const newBlog=await Blog.create({
            title,
            content,
            image:image?.url,
            author:user._id,
            readTime,
-           category: blogCategory._id,
+           category: category,
         })
    
         if(!newBlog){
@@ -73,7 +67,7 @@ const getAllBlogs=asyncHandler(async (req,res)=>{
 
     query=await searchUtils("title",query,req)
     const paginationResult=await paginateUtils(Blog,query,req)
-    const blogs = await paginationResult.query;
+    const blogs = paginationResult.query;
 
   if (Array.isArray(blogs) && blogs.length > 0 && typeof blogs[0] === 'object') {
     blogs.sort((a, b) => b.createdAt - a.createdAt);

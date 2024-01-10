@@ -36,7 +36,7 @@ const userSchema=new Schema({
     },
     likes:{
           type:Schema.Types.ObjectId,
-          ref:"Likes"
+          ref:"BlogLikes"
     },
     comments:{
           type:Schema.Types.ObjectId,

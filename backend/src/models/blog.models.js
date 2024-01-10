@@ -19,13 +19,13 @@ const blogSchema=new Schema({
         default:3
       },
       category:{
-          type:Schema.Types.ObjectId,
-          ref:"Category"
+          type:String,
+          required:true,
       },
       likes:[
         {
           type:Schema.Types.ObjectId,
-          ref:"Likes"
+          ref:"BlogLikes"
         }
       ],
       author:{
