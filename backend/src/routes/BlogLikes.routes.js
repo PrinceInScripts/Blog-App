@@ -6,8 +6,8 @@ import { getBlogLikes, likeBlog, unLikeBlog } from "../controllers/blogLlikes.co
 
 const router=Router()
 
-router.route("/:slug/like-blog").post(isUserLoggedIn,checkBlogExist,likeBlog)
-router.route("/:slug/unlike-blog").post(isUserLoggedIn,checkBlogExist,unLikeBlog)
+router.route("/:slug/like").post(isUserLoggedIn,checkBlogExist,likeBlog)
+router.route("/:slug/unlike").post(isUserLoggedIn,checkBlogExist,unLikeBlog)
 router.route("/:slug").get(isUserLoggedIn,checkBlogExist,getBlogLikes)
 
 export default router;

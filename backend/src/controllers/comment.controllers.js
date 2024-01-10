@@ -41,7 +41,7 @@ const addComment=asyncHandler(async (req,res)=>{
 
 const deleteComment=asyncHandler(async (req,res)=>{
     const { commentId } = req.params;
-
+ 
     const comment = await Comment.findById(commentId);
 
     if (!comment) {
