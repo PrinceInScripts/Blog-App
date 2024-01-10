@@ -16,11 +16,11 @@ export const checkBlogExist=asyncHandler(async (req,res,next)=>{
 
 export const checkUserAndBlogExist=asyncHandler(async (req,res,next)=>{
     const {slug}=req.params
-    const user=req.user.username;
-
+    const user=req.user;
+    
     const blog=await Blog.findOne({
         slug:slug,
-        author:user
+        author:user._id
     })
 
     if(!blog){

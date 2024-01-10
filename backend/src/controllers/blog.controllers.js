@@ -7,6 +7,9 @@ import { asyncHandler } from "../utlis/AsyncHander.js";
 import { uploadOnCloudinary } from "../utlis/cloudinary.js";
 import {paginateUtils, searchUtils} from '../utlis/query.js'
 
+
+// ++++++++++++++++++++++++++ createBlog ++++++++++++++++++++++++++
+
 const createBlog=asyncHandler(async (req,res)=>{
      const {title,content,category}=req.body
      const user=await User.findById(req.user._id)
@@ -61,6 +64,9 @@ const createBlog=asyncHandler(async (req,res)=>{
     
 })
 
+
+// ++++++++++++++++++++++++++ getAllBlogs ++++++++++++++++++++++++++
+
 const getAllBlogs=asyncHandler(async (req,res)=>{
     let query=await Blog.find();
     
@@ -89,6 +95,9 @@ const getAllBlogs=asyncHandler(async (req,res)=>{
              )
 })
 
+
+// ++++++++++++++++++++++++++ getBlogsOfUser ++++++++++++++++++++++++++
+
 const getBlogsOfUser=asyncHandler(async (req,res)=>{
     const userId=req.user._id
 
@@ -116,6 +125,8 @@ const getBlogsOfUser=asyncHandler(async (req,res)=>{
 
 })
 
+// ++++++++++++++++++++++++++ getBlogDetials ++++++++++++++++++++++++++
+
 const getBlogDetials=asyncHandler(async (req,res)=>{
     const {slug}=req.params;
     const activeUser=req.user;
@@ -139,46 +150,9 @@ const getBlogDetials=asyncHandler(async (req,res)=>{
              )
 })
 
-const likeBlog = asyncHandler(async (req, res) => {
-    const { slug } = req.params;
-    const activeUser = req.user;
-  
-    try {
-      const blog = await Blog.findOne({ slug }).populate("author likes");
-  
-      if (!blog) {
-        throw new ApiError(404, "Blog not found");
-      }
-  
-      const currentBlog=await Blog.findById(blog._id)
-      const blogLikes=currentBlog.likes;
-     const hasUserLiked=  blogLikes.some((like) => like.toString() === activeUser._id.toString());
-      if (hasUserLiked) {
-        currentBlog.unlike(activeUser._id)
 
-         return res.status(200).json(
-          new ApiResponse(
-            200,
-            { blog: blog },
-            "User unliked the blog successfully"
-          )
-        );
-      } else {
-        currentBlog.like(activeUser._id);
-  
-        return res.status(200).json(
-          new ApiResponse(
-            200,
-            { blog: blog },
-            "User liked the blog successfully"
-          )
-        );
-      }
-    } catch (error) {
-      console.error(error);
-      throw new ApiError(500, "Internal Server Error");
-    }
-  });
+// ++++++++++++++++++++++++++ editBlogPage ++++++++++++++++++++++++++
+
 
 const editBlogPage=asyncHandler(async (req,res)=>{
     const {slug}=req.params;
@@ -200,9 +174,14 @@ const editBlogPage=asyncHandler(async (req,res)=>{
              )
 })
 
+// ++++++++++++++++++++++++++ editBlogDetials ++++++++++++++++++++++++++
+
 const editBlogDetials=asyncHandler (async (req,res)=>{
     const {slug}=req.params;
     const {title,content}=req.body;
+
+    console.log(slug);
+    console.log(title,content);
 
     if(!title || !content){
         throw new ApiError(404,"All fields are required")
@@ -218,7 +197,7 @@ const editBlogDetials=asyncHandler (async (req,res)=>{
         blog._id,
         {
             $set:{
-                    fullName:fullName,
+                    title:title,
                     content:content
             }
         },
@@ -236,6 +215,9 @@ const editBlogDetials=asyncHandler (async (req,res)=>{
 
 
 })
+
+
+// ++++++++++++++++++++++++++ editBlogImage ++++++++++++++++++++++++++
 
 const editBlogImage=asyncHandler(async (req,res)=>{
     const {slug}=req.params;
@@ -274,6 +256,9 @@ const editBlogImage=asyncHandler(async (req,res)=>{
     
 })
 
+
+// ++++++++++++++++++++++++++ deleteBlog ++++++++++++++++++++++++++
+
 const deleteBlog=asyncHandler(async (req,res)=>{
     const {slug}=req.params;
 
@@ -283,7 +268,7 @@ const deleteBlog=asyncHandler(async (req,res)=>{
         throw new ApiError(404,"Blog not found")
     }
 
-    await blog.remove()
+    await Blog.findByIdAndDelete(blog._id)
 
     return res
              .status(200)
@@ -302,7 +287,6 @@ export {
     getAllBlogs,
     getBlogsOfUser,
     getBlogDetials,
-    likeBlog,
     editBlogPage,
     editBlogDetials,
     editBlogImage,

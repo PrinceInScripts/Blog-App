@@ -7,6 +7,8 @@ import sendEmail from "../utlis/sendEmail.js";
 import crypto from 'crypto'
 import jwt from "jsonwebtoken"
 
+// ++++++++++++++++++++++++++ generateAccessAndRefreshToken ++++++++++++++++++++++++++
+
 const generateAccessAndRefreshToken=async (userId)=>{
     try {
          const user=await User.findById(userId)
@@ -24,10 +26,16 @@ const generateAccessAndRefreshToken=async (userId)=>{
     }
 }
 
+
+// ++++++++++++++++++++++++++ options ++++++++++++++++++++++++++
+
 const options={
     httpOnly:true,
     secure:true
 }
+
+
+// ++++++++++++++++++++++++++ registerUser ++++++++++++++++++++++++++
 
 const registerUser=asyncHandler (async (req,res)=>{
     //get user detials from frontend
@@ -55,7 +63,6 @@ const registerUser=asyncHandler (async (req,res)=>{
     }
 
     const avatarLocalPath=req.files?.avatar[0]?.path;
-    // const coverImageLocalPath=req.files?.coverImage[0]?.path 
 
     let coverImageLocalPath;
     if(req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length>0){
@@ -93,6 +100,10 @@ const registerUser=asyncHandler (async (req,res)=>{
     new ApiResponse(200,createUser,"User Register Successfully")
    )
 })
+
+
+
+// ++++++++++++++++++++++++++ loginUser ++++++++++++++++++++++++++
 
 const loginUser=asyncHandler (async (req,res)=>{
     //gert user detials from frontend | req.body -> data 
@@ -143,6 +154,9 @@ const loginUser=asyncHandler (async (req,res)=>{
 
 })
 
+
+// ++++++++++++++++++++++++++ forgotPassword ++++++++++++++++++++++++++
+
 const forgotPassword=asyncHandler (async (req,res)=>{
     const {email,username}=req.body;
 
@@ -190,6 +204,10 @@ const forgotPassword=asyncHandler (async (req,res)=>{
 
 })
 
+
+// ++++++++++++++++++++++++++ resetPassword ++++++++++++++++++++++++++
+
+
 const resetPassword=asyncHandler (async (req,res)=>{
      const {resetToken}=req.params;
      const password=req.body;
@@ -226,6 +244,10 @@ const resetPassword=asyncHandler (async (req,res)=>{
                 )
               )
 })
+
+
+// ++++++++++++++++++++++++++ refreshAccessToken ++++++++++++++++++++++++++
+
 
 const refreshAccessToken=asyncHandler (async(req,res)=>{
     const inComingRefreshToken=req.cookies.refreshToken || req.body.refreshToken

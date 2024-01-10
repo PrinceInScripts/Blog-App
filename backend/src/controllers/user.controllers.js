@@ -5,10 +5,18 @@ import { ApiError } from "../utlis/ApiError.js";
 import { uploadOnCloudinary } from "../utlis/cloudinary.js";
 import { Blog } from "../models/blog.models.js";
 
+
+
+// ++++++++++++++++++++++++++ options ++++++++++++++++++++++++++
+
 const options={
     httpOnly:true,
     secure:true
 }
+
+
+
+// ++++++++++++++++++++++++++ getUser ++++++++++++++++++++++++++
 
 const getUser=asyncHandler(async (req,res)=>{
      const user=req.user
@@ -23,6 +31,9 @@ const getUser=asyncHandler(async (req,res)=>{
                )
               )
 })
+
+
+// ++++++++++++++++++++++++++ logoutUser ++++++++++++++++++++++++++
 
 const logoutUser=asyncHandler(async (req,res)=>{
     await User.findByIdAndUpdate(
@@ -50,6 +61,8 @@ const logoutUser=asyncHandler(async (req,res)=>{
               )
 })
 
+
+// ++++++++++++++++++++++++++ changePassword ++++++++++++++++++++++++++
 
 const changePassword=asyncHandler (async (req,res)=>{
     const {oldPassword,newPassword}=req.body
@@ -83,6 +96,8 @@ const changePassword=asyncHandler (async (req,res)=>{
 })
 
 
+// ++++++++++++++++++++++++++ updaterUserDetials ++++++++++++++++++++++++++
+
 const updaterUserDetials=asyncHandler(async (req,res)=>{
     const {fullName,email}=req.body
 
@@ -109,6 +124,8 @@ const updaterUserDetials=asyncHandler(async (req,res)=>{
                 new ApiResponse(200,user,"User detials successfully")
               )
 })
+
+// ++++++++++++++++++++++++++ updateUserAvatar ++++++++++++++++++++++++++
 
 const updateUserAvatar=asyncHandler(async (req,res)=>{
      const avatarLocalPath=req.file?.path
@@ -140,6 +157,8 @@ const updateUserAvatar=asyncHandler(async (req,res)=>{
               )
 })
 
+// ++++++++++++++++++++++++++ updateUserCoverImage ++++++++++++++++++++++++++
+
 const updateUserCoverImage=asyncHandler(async (req,res)=>{
      const coverImageLocalPath=req.file?.path
 
@@ -169,6 +188,9 @@ const updateUserCoverImage=asyncHandler(async (req,res)=>{
                 new ApiResponse(200,user,"User avatar successfully")
               )
 })
+
+
+// ++++++++++++++++++++++++++ addBlogToReadList ++++++++++++++++++++++++++
 
 const addBlogToReadList=asyncHandler(async (req,res)=>{
     const {slug}=req.params
@@ -204,6 +226,9 @@ const addBlogToReadList=asyncHandler(async (req,res)=>{
         throw new ApiError(500, 'Internal Server Error');
     }
 })
+
+
+// ++++++++++++++++++++++++++ readListPage ++++++++++++++++++++++++++
 
 const readListPage=asyncHandler(async (req,res)=>{
     try {
