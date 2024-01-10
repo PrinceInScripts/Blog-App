@@ -1,7 +1,5 @@
 import mongoose,{Schema} from 'mongoose'
 import slugify from 'slugify'
-import {Comment} from './comments.models.js'
-import { Likes } from './likes.models.js'
 
 const blogSchema=new Schema({
       title:{
@@ -71,9 +69,9 @@ blogSchema.methods.makeSlug=function (){
   })
 }
 
-blogSchema.methods.like=async function (userId){
-  if(!this.likes.includes(userId)){
-    this.likes.push(userId);
+blogSchema.methods.like=async function (likeId){
+  if(!this.likes.includes(likeId)){
+    this.likes.push(likeId);
     this.likesCount=this.likes.length;
     await this.save({validateBeforeSave:false});
   }
@@ -91,7 +89,7 @@ blogSchema.methods.addComment = async function (commentId) {
   if (!this.comments.includes(commentId)) {
     this.comments.push(commentId);
     this.commentCount = this.comments.length;
-    await this.save();
+    await this.save({validateBeforeSave:false});
   }
 };
 
@@ -99,14 +97,11 @@ blogSchema.methods.removeComment = async function (commentId) {
   if (this.comments.includes(commentId)) {
     this.comments = this.comments.filter((comment) => comment.toString() !== commentId.toString());
     this.commentCount = this.comments.length;
-    await this.save();
+    await this.save({validateBeforeSave:false});
   }
 };
 
-blogSchema.pre("remove", async function (next) {
-  await Comment.deleteMany({ _id: { $in: this.comments } });
-  next();
-});
+
 
 
 

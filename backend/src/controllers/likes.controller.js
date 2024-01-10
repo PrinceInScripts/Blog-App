@@ -5,6 +5,8 @@ import { ApiResponse } from "../utlis/ApiResponse.js";
 import { asyncHandler } from "../utlis/AsyncHander.js";
 
 
+// ++++++++++++++++++++++++++ likeBlog ++++++++++++++++++++++++++
+
 const likeBlog=asyncHandler(async (req,res)=>{
     const {slug}=req.params;
     const userId=req.user._id
@@ -53,6 +55,9 @@ const likeBlog=asyncHandler(async (req,res)=>{
               )
 })
 
+
+// ++++++++++++++++++++++++++ unLikeBlog ++++++++++++++++++++++++++
+
 const unLikeBlog=asyncHandler(async (req,res)=>{
     const {slug}=req.params;
     const userId=req.user._id
@@ -95,7 +100,27 @@ const unLikeBlog=asyncHandler(async (req,res)=>{
 })
 
 
+// ++++++++++++++++++++++++++ getBlogLikes ++++++++++++++++++++++++++
+
+const getBlogLikes = asyncHandler(async (req, res) => {
+    const {slug}=req.params;
+
+    const blog=await Blog.findOne({slug})
+
+    if(!blog){
+        throw new ApiError(404,"Blog not found")
+    }
+
+
+    const likes = await Likes.find({ blog: blog._id }).populate('likedBy');
+
+    return res.status(200).json(new ApiResponse(200, { likes: likes }, 'Blog likes fetched successfully'));
+});
+
+
 export {
     likeBlog,
-    unLikeBlog
+    unLikeBlog,
+    getBlogLikes
 }
+
