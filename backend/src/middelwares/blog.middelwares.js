@@ -24,7 +24,7 @@ export const checkUserAndBlogExist=asyncHandler(async (req,res,next)=>{
     })
 
     if(!blog){
-        throw new ApiError(404,"There is not story with taht slug associated with User",400)
+        throw new ApiError(404,"There is not blog with taht slug associated with User",400)
     }
 
     next()

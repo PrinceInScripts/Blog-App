@@ -1,24 +1,38 @@
-import { Blog } from "../models/blog.models";
-import { Likes } from "../models/likes.models";
-import { ApiError } from "../utlis/ApiError";
-import { ApiResponse } from "../utlis/ApiResponse";
-import { asyncHandler } from "../utlis/AsyncHander";
+import { Blog } from "../models/blog.models.js";
+import { Likes } from "../models/likes.models.js";
+import { ApiError } from "../utlis/ApiError.js";
+import { ApiResponse } from "../utlis/ApiResponse.js";
+import { asyncHandler } from "../utlis/AsyncHander.js";
 
 
 const likeBlog=asyncHandler(async (req,res)=>{
     const {slug}=req.params;
     const userId=req.user._id
 
+    console.log(slug);
+    console.log(userId);
+
     const blog=await Blog.findOne({slug})
+
+    console.log(blog);
 
     if(!blog){
         throw new ApiError(404,"Blog not found")
     }
 
     const existingLike=await Likes.findOne({blog:blog._id,likedBy:userId})
+    console.log(existingLike);
 
-    if(!existingLike){
-        throw new ApiError(400,"User has already likes this blog")
+    if(existingLike){
+        return res
+                 .status(200)
+                 .json(
+                    new ApiResponse(
+                        200,
+                        {},
+                        "User already Liked it"
+                        )
+                 )
     }
 
     const newLike=await Likes.create({
@@ -26,7 +40,7 @@ const likeBlog=asyncHandler(async (req,res)=>{
         likedBy:userId
     })
 
-    await blog.like(userId)
+    await blog.like(newLike._id)
 
     return res
               .status(200)
@@ -50,12 +64,24 @@ const unLikeBlog=asyncHandler(async (req,res)=>{
     }
 
     const existingLike=await Likes.findOne({blog:blog._id,likedBy:userId})
+    console.log(existingLike);
 
     if(!existingLike){
-        throw new ApiError(400,"User has not liked this blog")
+       return res
+                .status(200)
+                .json(
+                    new ApiResponse(
+                        200,
+                        {},
+                        "User have not liked these post"
+                    )
+                )
+        
     }
 
-    await existingLike.remove()
+    await Likes.findByIdAndDelete(existingLike._id)
+
+    await blog.unlike(existingLike._id)
 
     return res
               .status(200)
@@ -69,66 +95,7 @@ const unLikeBlog=asyncHandler(async (req,res)=>{
 })
 
 
-// const likeBlog = asyncHandler(async (req, res) => {
-//     const { slug } = req.params;
-//     const activeUser = req.user;
-  
-//     try {
-//       const blog = await Blog.findOne({ slug }).populate("author likes");
-  
-//       if (!blog) {
-//         throw new ApiError(404, "Blog not found");
-//       }
-  
-//       const currentBlog=await Blog.findById(blog._id)
-//       const blogLikes=currentBlog.likes;
-//      const hasUserLiked=  blogLikes.some((like) => like.toString() === activeUser._id.toString());
-//       if (hasUserLiked) {
-//         currentBlog.unlike(activeUser._id)
-
-//          return res.status(200).json(
-//           new ApiResponse(
-//             200,
-//             { blog: blog },
-//             "User unliked the blog successfully"
-//           )
-//         );
-//       } else {
-//         currentBlog.like(activeUser._id);
-  
-//         return res.status(200).json(
-//           new ApiResponse(
-//             200,
-//             { blog: blog },
-//             "User liked the blog successfully"
-//           )
-//         );
-//       }
-//     } catch (error) {
-//       console.error(error);
-//       throw new ApiError(500, "Internal Server Error");
-//     }
-//   });
-
-const getBlogLikes = asyncHandler(async (req, res) => {
-    const {slug}=req.params;
-
-    const blog=await Blog.findOne({slug})
-
-    if(!blog){
-        throw new ApiError(404,"Blog not found")
-    }
-
-
-    const likes = await Likes.find({ blog: blog._id }).populate('likedBy');
-
-    return res.status(200).json(new ApiResponse(200, { likes: likes }, 'Blog likes fetched successfully'));
-});
-
-
 export {
     likeBlog,
-    unLikeBlog,
-    getBlogLikes
+    unLikeBlog
 }
-
