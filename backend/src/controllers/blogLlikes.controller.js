@@ -1,5 +1,5 @@
 import { Blog } from "../models/blog.models.js";
-import { Likes } from "../models/blogLikes.models.js";
+import { BlogLikes } from "../models/blogLikes.models.js";
 import { ApiError } from "../utlis/ApiError.js";
 import { ApiResponse } from "../utlis/ApiResponse.js";
 import { asyncHandler } from "../utlis/AsyncHander.js";
@@ -10,10 +10,7 @@ import { asyncHandler } from "../utlis/AsyncHander.js";
 const likeBlog=asyncHandler(async (req,res)=>{
     const {slug}=req.params;
     const userId=req.user._id
-
-    console.log(slug);
-    console.log(userId);
-
+    
     const blog=await Blog.findOne({slug})
 
     console.log(blog);
@@ -22,7 +19,7 @@ const likeBlog=asyncHandler(async (req,res)=>{
         throw new ApiError(404,"Blog not found")
     }
 
-    const existingLike=await Likes.findOne({blog:blog._id,likedBy:userId})
+    const existingLike=await BlogLikes.findOne({blog:blog._id,likedBy:userId})
 
     if(existingLike){
         return res
@@ -36,7 +33,7 @@ const likeBlog=asyncHandler(async (req,res)=>{
                  )
     }
 
-    const newLike=await Likes.create({
+    const newLike=await BlogLikes.create({
         blog:blog._id,
         likedBy:userId
     })
@@ -67,7 +64,7 @@ const unLikeBlog=asyncHandler(async (req,res)=>{
         throw new ApiError(404,"Blog not found")
     }
 
-    const existingLike=await Likes.findOne({blog:blog._id,likedBy:userId})
+    const existingLike=await BlogLikes.findOne({blog:blog._id,likedBy:userId})
     console.log(existingLike);
 
     if(!existingLike){
@@ -83,7 +80,7 @@ const unLikeBlog=asyncHandler(async (req,res)=>{
         
     }
 
-    await Likes.findByIdAndDelete(existingLike._id)
+    await BlogLikes.findByIdAndDelete(existingLike._id)
 
     await blog.unlike(existingLike._id)
 
@@ -111,7 +108,7 @@ const getBlogLikes = asyncHandler(async (req, res) => {
     }
 
 
-    const likes = await Likes.find({ blog: blog._id }).populate('likedBy');
+    const likes = await BlogLikes.find({ blog: blog._id }).populate('likedBy');
 
     return res.status(200).json(new ApiResponse(200, { likes: likes }, 'Blog likes fetched successfully'));
 });

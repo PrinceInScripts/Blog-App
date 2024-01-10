@@ -34,7 +34,7 @@ commentSchema.methods.like=async function (likeId){
     }
   }
   
-  blogSchema.methods.unlike=async function (userId){
+  commentSchema.methods.unlike=async function (userId){
     if(this.likes.includes(userId)){
       this.likes=this.likes.filter(like=>like.toString()!==userId.toString())
       this.likesCount=this.likes.length;
