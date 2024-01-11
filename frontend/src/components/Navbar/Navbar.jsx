@@ -51,10 +51,10 @@ function Navbar() {
         </div>
        : 
        <div className='flex gap-2'>
-           <Link >
+           <Link to={"/login"}>
            <button className="btn btn-primary">Login</button>
            </Link>
-           <Link >
+           <Link to={"/signup"}>
            <button className="btn btn-secondary">Signup</button>
            </Link>
         </div>}

@@ -1,14 +1,18 @@
 import React from 'react';
-import Navbar from './components/Navbar/Navbar';
-import Footer from './components/Footer/Footer';
-import Layout from './Layout/Layout';
 import Home from './pages/Home/Home';
 import Signup from './pages/Signup/Signup';
+import { Route, Routes } from 'react-router-dom';
+import Login from './pages/Login/Login';
 
 function App() {
   return (
     <>
-     <Signup/>
+     <Routes>
+      <Route path='/' element={<Home/>}/>
+
+      <Route path='/signup' element={<Signup/>}/>
+      <Route path='/login' element={<Login/>}/>
+     </Routes>
     </>
   );
 }

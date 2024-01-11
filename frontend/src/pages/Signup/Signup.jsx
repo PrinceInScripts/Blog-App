@@ -85,7 +85,6 @@ function Signup() {
         formData.append("avatar",signupDetails.avatar)
 
         const response=await dispatch(createAccount(formData))
-        console.log("response",response);
         if(response?.payload?.data.success){
             navigate("/")
         }
@@ -105,13 +104,13 @@ function Signup() {
     return (
         <Layout>
              <div className="flex overflow-x-auto items-center justify-center gap-20 h-[90vh]">
-             <div className='w-96 h-[36rem] p-6 rounded-lg flex flex-col justify-evenly bg-bash-600 shadow-[0_0_10px_black]'>
+             <div className='w-96 h-[38rem] p-6 rounded-lg flex flex-col justify-evenly bg-bash-600 shadow-[0_0_10px_black]'>
                  <p className='text-sm'>It is easy and free to your post your thinking on any topic and connect with thousand of readers</p>
                  <img src={signup} alt="" />
              </div>
-             <form onSubmit={onFormSubmit} noValidate className="flex flex-col justify-center gap-3 bg-bash-600 rounded-lg p-6 w-96 h-[36rem]  shadow-[0_0_10px_black]">
+             <form onSubmit={onFormSubmit} noValidate className="flex flex-col justify-center gap-3 bg-bash-600 rounded-lg p-6 w-96 h-[38rem]  shadow-[0_0_10px_black]">
              <p className="">
-                            have an account ? <Link to="/signin" className="cusror-pointer text-accent">Login</Link>
+                            have an account ? <Link to="/login" className="cusror-pointer text-accent">Login</Link>
                 </p>
                 
                   
@@ -141,7 +140,7 @@ function Signup() {
                     required
                     type="text"
                     name="username"
-                    className="bg-transparent px-2 py-1 border"
+                    className="input input-bordered w-full max-w-xs"
                     placeholder="enter your username..."
                     id="username"
                     />
@@ -155,8 +154,8 @@ function Signup() {
                     required
                     type="text"
                     name="fullName"
-                    className="bg-transparent px-2 py-1 border"
-                    placeholder="enter your username..."
+                    className="input input-bordered w-full max-w-xs"
+                    placeholder="enter your fullName..."
                     id="fullName"
                     />
                 </div>
@@ -168,7 +167,7 @@ function Signup() {
                     required
                     type="email"
                     name="email"
-                    className="bg-transparent px-2 py-1 border"
+                    className="input input-bordered w-full max-w-xs"
                     placeholder="enter your Email..."
                     id="email"
                     />
@@ -182,7 +181,7 @@ function Signup() {
                     required
                     type="password"
                     name="password"
-                    className="bg-transparent px-2 py-1 border"
+                    className="input input-bordered w-full max-w-xs"
                     placeholder="enter your Password..."
                     id="password"
                     />

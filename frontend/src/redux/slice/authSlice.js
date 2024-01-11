@@ -25,10 +25,43 @@ export const createAccount=createAsyncThunk("/auth/signup",async (data)=>{
     }
 })
 
+export const login=createAsyncThunk("/auth/login",async (data)=>{
+    try {
+        const response=axiosInstance.post("auth/login",data)
+       
+        toast.promise(response,{
+            loading:'Wait! authenticating your account',
+            success:(data)=>{
+                return data?.data?.message;
+            },
+            error:'Faild to authenticate your account'
+        })
+
+        return await response;
+    } catch (error) {
+        toast.error(error?.response?.data?.message)
+    }
+})
+
 const authSlice=createSlice({
     name:"auth",
     initialState,
-    reducers:{}
+    reducers:{},
+    extraReducers:(builder)=>{
+    builder
+           .addCase(login.fulfilled,(state,action)=>{
+              
+               const user=action.payload?.data?.data?.user;
+
+               if(user){
+                localStorage.setItem('data',JSON.stringify(user))
+                localStorage.setItem('isLoggedIn',true)
+
+                state.isLoggedIn=true;
+                state.data=user;
+               }
+           })  
+    }
 })
 
 export default authSlice.reducer;
