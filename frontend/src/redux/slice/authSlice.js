@@ -185,6 +185,7 @@ export const updateCoverImage=createAsyncThunk("/auth/updateCoverImage",async (c
             error:'Faild to update your coverImage'
         })  
 
+        console.log(await response);
         return (await response).data;
     } catch (error) {
         toast.error(error?.response?.data?.message)
