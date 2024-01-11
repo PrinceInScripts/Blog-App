@@ -1,17 +1,12 @@
-import { useEffect } from 'react'
-import './App.css'
-import toast from 'react-hot-toast'
+import React from 'react';
+import Navbar from './components/Navbar/Navbar';
 
 function App() {
-  
-  useEffect(()=>{
-   toast.success("Laod successfull");
-  },[])
   return (
     <>
-      <div className='bg-black text-white text-4xl'>Welcome to here ..</div>
+     <Navbar/>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
