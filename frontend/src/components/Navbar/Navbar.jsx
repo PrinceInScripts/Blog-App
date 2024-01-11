@@ -14,7 +14,7 @@ function Navbar() {
         console.log(isLoggedIn);
     },[])
     return (
-        <div className="navbar px-20 bg-[#F6F7F9]">
+        <div className="navbar px-20 bg-base-200">
          <div className="flex-1">
            <Link to='/' className="btn btn-ghost text-4xl font-bold">WriteWave</Link>
          </div>
