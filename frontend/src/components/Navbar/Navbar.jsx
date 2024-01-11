@@ -9,10 +9,6 @@ function Navbar() {
 
     const isLoggedIn=useSelector((state)=>state?.auth?.isLoggedIn)
     const data=useSelector((state)=>state?.auth?.data)
-
-    useEffect(()=>{
-        console.log(isLoggedIn);
-    },[])
     return (
         <div className="navbar px-20 bg-base-200">
          <div className="flex-1">
