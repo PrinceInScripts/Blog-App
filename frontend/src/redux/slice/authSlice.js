@@ -42,6 +42,25 @@ export const login=createAsyncThunk("/auth/login",async (data)=>{
         toast.error(error?.response?.data?.message)
     }
 })
+export const logout=createAsyncThunk("/auth/logout",async ()=>{
+    try {
+        const response=axiosInstance.get("users/logout")
+       console.log(response);
+        toast.promise(response,{
+            loading:'Wait! logging out your account',
+            success:(data)=>{
+                return data?.data?.message;
+            },
+            error:'Faild to logout your account'
+        })
+
+        return await response;
+    } catch (error) {
+        toast.error(error?.response?.data?.message)
+    }
+})
+
+
 
 const authSlice=createSlice({
     name:"auth",
@@ -61,6 +80,12 @@ const authSlice=createSlice({
                 state.data=user;
                }
            })  
+           .addCase(logout.fulfilled,(state)=>{
+            localStorage.clear()
+            state.isLoggedIn=false
+            state.role=""
+            state.data={}
+           })
     }
 })
 

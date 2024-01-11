@@ -1,14 +1,29 @@
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaSearch } from "react-icons/fa";
 import { GoSun } from "react-icons/go";
 import { MdOutlineDarkMode } from "react-icons/md";
+import { logout } from '../../redux/slice/authSlice';
 
 function Navbar() {
 
+    const dispatch=useDispatch()
+    const navigate=useNavigate()
+
     const isLoggedIn=useSelector((state)=>state?.auth?.isLoggedIn)
     const data=useSelector((state)=>state?.auth?.data)
+
+    async function onLogout(e){
+       e.preventDefault()
+       const response=await dispatch(logout())
+       console.log(response);
+       console.log(response?.payload.data);
+
+       if(response?.payload?.data.success){
+        navigate('/')
+       }
+    }
     return (
         <div className="navbar px-20 bg-base-200">
          <div className="flex-1">
@@ -33,11 +48,11 @@ function Navbar() {
           <div className="dropdown dropdown-end">
             <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
               <div className="w-10 rounded-full">
-                <img alt="profile image" src="" />
+                <img alt="profile image" src={data?.avatar} />
               </div>
             </div>
             <ul tabIndex={0} className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
-            <li><Link to={"/logout"}>Username</Link></li>
+            <li><Link>{data?.username}</Link></li>
             <hr />
               <li>
                 <Link to={"/profile"} className="justify-between">
@@ -45,7 +60,7 @@ function Navbar() {
                   <span className="badge">New</span>
                 </Link>
               </li>
-              <li><Link to={"/logout"}>Logout</Link></li>
+              <li onClick={onLogout}><Link>Logout</Link></li>
             </ul>
           </div>
         </div>
