@@ -18,7 +18,7 @@ function Navbar() {
          <div className="flex-1">
            <Link to='/' className="btn btn-ghost text-4xl font-bold">WriteWave</Link>
          </div>
-         <div className='mr-10'>
+         <div className='mr-5'>
          <label className="swap swap-rotate ">
         <input type="checkbox" className="theme-controller" value="dark" />
         <GoSun className="swap-on fill-current w-10 h-10"/>
