@@ -14,12 +14,10 @@ function Navbar() {
     const isLoggedIn=useSelector((state)=>state?.auth?.isLoggedIn)
     const data=useSelector((state)=>state?.auth?.data)
 
+
     async function onLogout(e){
        e.preventDefault()
        const response=await dispatch(logout())
-       console.log(response);
-       console.log(response?.payload.data);
-
        if(response?.payload?.data.success){
         navigate('/')
        }
