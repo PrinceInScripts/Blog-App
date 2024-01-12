@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import Layout from '../../Layout/Layout';
 import { Link } from 'react-router-dom';
 import HomePage from '../../assets/HomePage.png'
-import { getAllBlogs } from '../../redux/slice/blogSlice';
+import { getAllBlogs, getUserBlogs } from '../../redux/slice/blogSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import BlogCard from '../../components/BlogCard/BlogCard';
 
@@ -11,13 +11,14 @@ import BlogCard from '../../components/BlogCard/BlogCard';
        async function load(){
         const response=await dispatch(getAllBlogs())
         console.log(response);
+      
        }
     useEffect(()=>{
         load()
-       
     },[])
 
-    const blog=useSelector((state)=>state.blog.blogs)
+    const blog=useSelector((state)=>state.blog.allBlogs)
+   
 
     const featuredBlog=blog.slice(0,6)
 

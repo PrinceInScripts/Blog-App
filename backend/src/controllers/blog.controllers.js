@@ -62,7 +62,7 @@ const createBlog=asyncHandler(async (req,res)=>{
 // ++++++++++++++++++++++++++ getAllBlogs ++++++++++++++++++++++++++
 
 const getAllBlogs=asyncHandler(async (req,res)=>{
-    let query=await Blog.find();
+    let query=await Blog.find().populate('author');
     
 
     query=await searchUtils("title",query,req)
@@ -97,7 +97,8 @@ const getBlogsOfUser=asyncHandler(async (req,res)=>{
 
     const blogs=await Blog.find({
         author:userId
-    })
+    }).populate('author')
+    console.log(blogs);
 
     if (Array.isArray(blogs) && blogs.length > 0 && typeof blogs[0] === 'object') {
         blogs.sort((a, b) => b.createdAt - a.createdAt);
@@ -110,7 +111,7 @@ const getBlogsOfUser=asyncHandler(async (req,res)=>{
            200,
            {
             count: blogs.length,
-            blogs: blogs,
+            data: blogs,
            },
            "Blogs fetched successfully for the authenticated user"
        )
@@ -125,7 +126,7 @@ const getBlogDetials=asyncHandler(async (req,res)=>{
     const {slug}=req.params;
     const activeUser=req.user;
 
-    const blog=await Blog.findOne({slug}).populate("author likes")
+    const blog=await Blog.findOne({slug}).populate("author likes comments")
 
     const blogLikeUserId=blog.likes && Array.isArray(blog.likes) ? blog.likes.map((user) => user.id) : [];
     const likeStatus=blogLikeUserId.includes(activeUser._id)
@@ -136,7 +137,7 @@ const getBlogDetials=asyncHandler(async (req,res)=>{
                 new ApiResponse(
                     200,
                     {
-                    blog:blog,
+                    data:blog,
                     likeStatus:likeStatus
                     },
                     "Blog Detials fetched Successfully"
@@ -162,7 +163,7 @@ const editBlogPage=asyncHandler(async (req,res)=>{
              .json(
                 new ApiResponse(
                     200,
-                   { blog:blog},
+                   { data:blog},
                    "Edit Page fetched Successfully"
                 )
              )
@@ -203,7 +204,7 @@ const editBlogDetials=asyncHandler (async (req,res)=>{
              .json(
                 new ApiResponse
                 (200,
-                {blog:editedBlog},
+                {data:editedBlog},
                 "Blog edited Successfully")
              )
 
@@ -244,7 +245,7 @@ const editBlogImage=asyncHandler(async (req,res)=>{
              .json(
                 new ApiResponse
                 (200,
-                {blog:editedBlog},
+                {data:editedBlog},
                 "Blog edited Successfully")
              )
     
