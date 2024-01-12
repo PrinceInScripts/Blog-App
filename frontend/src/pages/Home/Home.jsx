@@ -9,8 +9,7 @@ import BlogCard from '../../components/BlogCard/BlogCard';
  function Home() {
     const dispatch=useDispatch()
        async function load(){
-        const response=await dispatch(getAllBlogs())
-        console.log(response);
+      await dispatch(getAllBlogs())
       
        }
     useEffect(()=>{

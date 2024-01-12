@@ -2,8 +2,9 @@ import React, { useEffect } from 'react';
 import { AiOutlineLike } from "react-icons/ai";
 import { FaRegComment, FaTimes } from "react-icons/fa";
 import { FaShareAlt } from "react-icons/fa";
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import {  ondeleteBlog } from '../../redux/slice/blogSlice';
 
 function modifyContent(content,maxLength){
     if(content.length > maxLength){
@@ -26,14 +27,30 @@ function formatTime(time){
 
 
 
-function BlogCard({blog}) {
 
+
+function UserBlogCard({blog}) {
+    const dispatch=useDispatch()
+
+    async function OnDeleteBlog(slug){
+        console.log(slug);
+        const response=await dispatch(ondeleteBlog(slug))
+        if(response?.payload.success){
+            navigate("/")
+        }
+    }
+
+    const navigate=useNavigate()
 
     const auth=useSelector((state)=>state?.auth.isLoggedIn)
     const blogs=useSelector((state)=>state.blog.userBlogs)
 
     const content=modifyContent(blog.content,150)
     const extractedDate = formatTime(blog.author.createdAt);
+
+    useEffect(()=>{
+       console.log(blog); 
+    },[])
     return (
             
               <div className="card w-96 bg-base-100 shadow-xl">
@@ -43,8 +60,7 @@ function BlogCard({blog}) {
                         {blog.title}
                         </h2>
                         <p>{content}
-                        <Link to={"/blog-details"} state={{...blog}}><button>Read more</button></Link>
-                            
+                            <button>Read more</button>
                         </p>
                         <div className="flex justify-between items-center">
                           <div className="badge badge-outline">{blog.category}</div> 
@@ -68,7 +84,19 @@ function BlogCard({blog}) {
                             </div>
                         </div>
                        
-                      
+                       {auth && blogs.length>0 && 
+                         <div className='mt-4 flex gap-5 justify-end'>
+                            <Link to={'/edit-blog'} state={{ ...blog }}>
+                            <button  className='btn btn-info'>Edit</button>
+                            </Link>
+                            <Link >
+                            <button onClick={()=>OnDeleteBlog(blog.slug)} className='btn btn-error'>Delete</button>
+                            </Link>
+                          
+                           
+                         </div>
+                       }
+                       
                     </div>
                     </div>
            
@@ -76,4 +104,4 @@ function BlogCard({blog}) {
     );
 }
 
-export default BlogCard;
+export default UserBlogCard;

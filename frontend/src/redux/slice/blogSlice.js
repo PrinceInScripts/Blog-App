@@ -94,16 +94,17 @@ export const editBlog=createAsyncThunk("blog/editBlogDetails",async (slug) => {
         toast.error(error?.response?.data?.message)
     }
 })
-export const editBlogDetails=createAsyncThunk("blog/editBlogDetails",async (slug,data) => {
+export const editBlogDetails=createAsyncThunk("blog/editBlogDetails",async (data) => {
     try {
-        const response=axiosInstance.patch(`/blog/${slug}/edit-blog-detials`,data)
+        console.log(data);
+        const response=axiosInstance.patch(`/blog/${data.slug}/edit-blog-detials`,{ content: data.content })
        console.log(response);
         toast.promise(response,{
             loading:"Wait! updating your blog details",
             success: (data) => {
                 return data?.data?.message;
               },
-              error: 'Faild to updating blog details'
+              error: 'Faild to updating blog details'   
         })
 
         return (await response).data
@@ -111,9 +112,10 @@ export const editBlogDetails=createAsyncThunk("blog/editBlogDetails",async (slug
         toast.error(error?.response?.data?.message)
     }
 })
-export const editBlogImage=createAsyncThunk("blog/editBlogImage",async (slug,image) => {
+export const editBlogImage=createAsyncThunk("blog/editBlogImage",async (data) => {
     try {
-        const response=axiosInstance.patch(`/blog/${slug}/edit-blog-image`,image)
+        console.log(data.slug,data.formData);
+        const response=axiosInstance.patch(`/blog/${data.slug}/edit-blog-image`,data.formData)
        console.log(response);
         toast.promise(response,{
             loading:"Wait! updating your blog image",
@@ -129,7 +131,7 @@ export const editBlogImage=createAsyncThunk("blog/editBlogImage",async (slug,ima
     }
 })
 
-export const deleteBlog=createAsyncThunk("blog/editBlogImage",async (slug) => {
+export const ondeleteBlog=createAsyncThunk("blog/editBlogImage",async (slug) => {
     try {
         const response=axiosInstance.delete(`/blog/${slug}/delete-blog`)
        console.log(response);
@@ -154,19 +156,45 @@ const blogSlice=createSlice({
     name:"blog",
     initialState,
     reducers:{},
-    extraReducers:(builder)=>{
-    builder
-           .addCase(getAllBlogs.fulfilled,(state,action)=>{
-            if(action?.payload){
-               state.allBlogs=[...action.payload.data.data]
-            }
-           })
-           .addCase(getUserBlogs.fulfilled,(state,action)=>{
-           
-            if(action?.payload){
-               state.userBlogs=[...action.payload.data.data]
-            }
-           })
+    extraReducers: (builder) => {
+        builder
+            .addCase(getAllBlogs.fulfilled, (state, action) => {
+                if (action?.payload) {
+                    state.allBlogs = [...action.payload.data.data];
+                }
+            })
+            .addCase(getUserBlogs.fulfilled, (state, action) => {
+                if (action?.payload) {
+                    state.userBlogs = [...action.payload.data.data];
+                }
+            })
+            .addCase(editBlogDetails.fulfilled, (state, action) => {
+                console.log(action);
+                if (action?.payload) {
+                    const updatedBlog = action.payload.data.data;
+                    const index = state.allBlogs.findIndex((blog) => blog.id === updatedBlog.id);
+                    if (index !== -1) {
+                        state.allBlogs[index] = updatedBlog;
+                    }
+                }
+            })
+            // .addCase(editBlogImage.fulfilled, (state, action) => {
+            //     if (action?.payload) {
+            //         const updatedBlog = action.payload.data.data;
+            //         const index = state.allBlogs.findIndex((blog) => blog.id === updatedBlog.id);
+            //         if (index !== -1) {
+            //             state.allBlogs[index] = updatedBlog;
+            //         }
+            //     }
+            // })
+            .addCase(ondeleteBlog.fulfilled, (state, action) => {
+                
+                if (action?.payload) {
+                    
+                    const deletedBlogId = action.payload.data.data._id;
+                    state.allBlogs = state.allBlogs.filter((blog) => blog.id !== deletedBlogId);
+                }
+            });
     }
 })
 

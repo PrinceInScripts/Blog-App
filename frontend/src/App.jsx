@@ -9,6 +9,10 @@ import Profile from './pages/Profile/Profile';
 import EditCoverImage from './pages/EditProfile/EditCoverImage/EditCoverImage';
 import EditAvatar from './pages/EditProfile/EditAvatar/EditAvatar';
 import EditDetails from './pages/EditProfile/EditDetails/EditDetails';
+import EditBlog from './pages/EditBlog/EditBlog/EditBlog';
+import DeleteBlog from './pages/EditBlog/DeleteBlog/DeleteBlog';
+import EditBlogImage from './pages/EditBlog/EditBlog/EditBlogImage';
+import BlogDetails from './components/BlogDetails/BlogDetails';
 
 function App() {
   return (
@@ -24,6 +28,10 @@ function App() {
       <Route path='/update-coverImage' element={<EditCoverImage/>}/>
       <Route path='/update-avatar' element={<EditAvatar/>}/>
       <Route path='/update-account' element={<EditDetails/>}/>
+      <Route path='/edit-blog' element={<EditBlog/>}/>
+      <Route path='/update-image' element={<EditBlogImage/>}/>
+      <Route path='/delete-blog' element={<DeleteBlog/>}/>
+      <Route path='/blog-details' element={<BlogDetails/>}/>
      </Routes>
     </>
   );

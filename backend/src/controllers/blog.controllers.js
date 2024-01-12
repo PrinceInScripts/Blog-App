@@ -62,7 +62,7 @@ const createBlog=asyncHandler(async (req,res)=>{
 // ++++++++++++++++++++++++++ getAllBlogs ++++++++++++++++++++++++++
 
 const getAllBlogs=asyncHandler(async (req,res)=>{
-    let query=await Blog.find().populate('author');
+    let query=await Blog.find().populate('author comments likes');
     
 
     query=await searchUtils("title",query,req)
@@ -97,8 +97,7 @@ const getBlogsOfUser=asyncHandler(async (req,res)=>{
 
     const blogs=await Blog.find({
         author:userId
-    }).populate('author')
-    console.log(blogs);
+    }).populate('author comments likes')
 
     if (Array.isArray(blogs) && blogs.length > 0 && typeof blogs[0] === 'object') {
         blogs.sort((a, b) => b.createdAt - a.createdAt);
@@ -173,12 +172,12 @@ const editBlogPage=asyncHandler(async (req,res)=>{
 
 const editBlogDetials=asyncHandler (async (req,res)=>{
     const {slug}=req.params;
-    const {title,content}=req.body;
+    const {content}=req.body;
 
     console.log(slug);
-    console.log(title,content);
+    console.log(content);
 
-    if(!title || !content){
+    if(!content){
         throw new ApiError(404,"All fields are required")
     }
 
@@ -192,7 +191,6 @@ const editBlogDetials=asyncHandler (async (req,res)=>{
         blog._id,
         {
             $set:{
-                    title:title,
                     content:content
             }
         },
@@ -263,14 +261,15 @@ const deleteBlog=asyncHandler(async (req,res)=>{
         throw new ApiError(404,"Blog not found")
     }
 
-    await Blog.findByIdAndDelete(blog._id)
+    const data=await Blog.findByIdAndDelete(blog._id)
+   
 
     return res
              .status(200)
              .json(
                 new ApiResponse(
                     200,
-                {},
+                {data},
                 "Blog deleted Successfully"
                 )
              )
