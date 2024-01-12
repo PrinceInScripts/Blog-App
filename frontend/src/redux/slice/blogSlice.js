@@ -46,6 +46,7 @@ export const getAllBlogs=createAsyncThunk("blog/getAllBlog",async () => {
 export const getUserBlogs=createAsyncThunk("blog/getUserBlogs",async () => {
     try {
         const response=axiosInstance.get("/blog/user/blogs")
+        console.log(response);
         toast.promise(response,{
             loading:"Wait! feching your blogs",
             success: (data) => {
@@ -161,6 +162,7 @@ const blogSlice=createSlice({
             }
            })
            .addCase(getUserBlogs.fulfilled,(state,action)=>{
+           
             if(action?.payload){
                state.userBlogs=[...action.payload.data.data]
             }
