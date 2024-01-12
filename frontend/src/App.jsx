@@ -6,6 +6,8 @@ import Login from './pages/Login/Login';
 import BlogCard from './components/BlogCard/BlogCard';
 import AddBlog from './pages/AddBlog/AddBlog';
 import Profile from './pages/Profile/Profile';
+import EditCoverImage from './pages/EditProfile/EditCoverImage/EditCoverImage';
+import EditAvatar from './pages/EditProfile/EditAvatar/EditAvatar';
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
       <Route path='/blogcard' element={<BlogCard/>}/>
       <Route path='/add-blog' element={<AddBlog/>}/>
       <Route path='/profile' element={<Profile/>}/>
+      <Route path='/update-coverImage' element={<EditCoverImage/>}/>
+      <Route path='/update-avatar' element={<EditAvatar/>}/>
      </Routes>
     </>
   );

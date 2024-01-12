@@ -159,7 +159,7 @@ export const updateAccount=createAsyncThunk("/auth/updateAccount",async (data)=>
 export const updateAvatar=createAsyncThunk("/auth/updateAvatar",async (avatar)=>{
     try {
         const response=axiosInstance.patch("users/avatar",avatar)
-      
+        console.log(response);
         toast.promise(response,{
             loading:'Wait! updating your avatar',
             success:(data)=>{
@@ -176,7 +176,7 @@ export const updateAvatar=createAsyncThunk("/auth/updateAvatar",async (avatar)=>
 export const updateCoverImage=createAsyncThunk("/auth/updateCoverImage",async (coverImage)=>{
     try {
         const response=axiosInstance.patch("users/coverImage",coverImage)
-      
+        console.log(response);
         toast.promise(response,{
             loading:'Wait! updating your coverImage',
             success:(data)=>{
@@ -244,13 +244,13 @@ const authSlice=createSlice({
               localStorage.setItem("data",JSON.stringify(state.data))
            })
            .addCase(updateAvatar.fulfilled,(state,action)=>{
-              const updatingDetials=action.payload?.data.data.user;
-              state.data={...state.data,...updatingDetials}
-
+            const updatingDetials=action.payload?.data;
+            state.data={...state.data,...updatingDetials}
               localStorage.setItem("data",JSON.stringify(state.data))
            })
            .addCase(updateCoverImage.fulfilled,(state,action)=>{
-              const updatingDetials=action.payload?.data.data.user;
+           
+              const updatingDetials=action.payload?.data;
               state.data={...state.data,...updatingDetials}
 
               localStorage.setItem("data",JSON.stringify(state.data))
