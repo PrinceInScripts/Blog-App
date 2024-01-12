@@ -11,8 +11,8 @@ const initialState={
 
 export const addBlog=createAsyncThunk("blog/addBlog",async (data) => {
     try {
-        const response=axiosInstance.get("/blog/addBlog",data)
-        console.log(response);
+        const response=axiosInstance.post("/blog/addBlog",data)
+       
         toast.promise(response,{
             loading:"Wait! added blog",
             success: (data) => {

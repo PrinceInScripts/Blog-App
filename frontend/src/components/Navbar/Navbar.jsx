@@ -37,6 +37,9 @@ function Navbar() {
         
         {isLoggedIn?
             <div className="flex-none gap-2">
+            <div>
+              <Link to={"/add-blog"}><button className="btn btn-active btn-secondary">Add Blog</button></Link>
+            </div>
             <div className=" flex gap-2">
             <input type="text" placeholder="Type here" className="input input-bordered input-primary w-full max-w-xs" />
             <button className="btn btn-outline btn-primary">
