@@ -116,7 +116,7 @@ const updaterUserDetials=asyncHandler(async (req,res)=>{
         {
             new:true
         }
-    ).select("-passwprd")
+    ).select("-password")
 
     return res 
               .status(200)

@@ -238,8 +238,8 @@ const authSlice=createSlice({
             state.data=action?.payload?.user
            })
            .addCase(updateAccount.fulfilled,(state,action)=>{
-              const updatingDetials=action.payload?.data.data.user;
-              state.data={...state.data,...updatingDetials}
+            const updatingDetials=action.payload?.data;
+            state.data={...state.data,...updatingDetials}
 
               localStorage.setItem("data",JSON.stringify(state.data))
            })

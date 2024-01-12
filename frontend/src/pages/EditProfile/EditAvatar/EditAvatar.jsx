@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import Layout from '../../../Layout/Layout';
 import toast from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaUpload } from 'react-icons/fa';
 import { updateAvatar, } from '../../../redux/slice/authSlice';
 import { BsPersonCircle } from 'react-icons/bs';
+import { AiOutlineArrowLeft } from 'react-icons/ai';
 
 function EditAvatar() {
 
@@ -62,6 +63,9 @@ function EditAvatar() {
         <Layout>
             <div className='min-h-[90vh] flex flex-col items-center justify-center' >
                 <form onSubmit={onSubmit} className=' h-80 flex flex-col gap-10'>
+                <Link onClick={()=>navigate(-1)} className=" text-2xl link text-accent cursor-pointer">
+                  <AiOutlineArrowLeft/>
+                  </Link>
                   <div>
                             <label
                             htmlFor="image_uploads"

@@ -75,7 +75,7 @@ function Profile() {
                     
                
                 <div className='flex justify-between gap-20  items-center'>
-                    <div className=' relative right-[21rem] bottom-16'>
+                    <div className=' relative right-80 bottom-16'>
                     <img src={user.avatar} alt="" className='w-56 h-56 rounded-full'/>
                     <div className='absolute w-10 h-10 rounded-full flex items-center justify-center bg-white left-24 cursor-pointer top-48 text-black'>
                             <Link to={"/update-avatar"}>
@@ -83,12 +83,13 @@ function Profile() {
                         </Link>
                        </div>
                     </div>
-                    <div className='flex flex-col gap-4 relative right-80 bottom-16'>
-                        <div className='flex gap-10'>
+                    <div className='flex flex-col justify-center items-start gap-4 m-2 relative right-80 bottom-12'>
+                        <div className='flex items-center gap-10'>
                         <p>{user.username}</p>
-                        <button>Edit Profile</button>
+                        <Link to={"/update-account"}><button className='btn btn-success'>Edit Profile</button></Link>
+                        
                         </div>
-                        <div>
+                        <div className='flex flex-col justify-start'>
                         <p>{user.fullName}</p>
                         <p>{user.email}</p>
                         </div>
@@ -102,11 +103,22 @@ function Profile() {
                 <div className='flex flex-col justify-start items-start w-3/4 gap-10 m-auto'>
                         <h1 className='text-center text-4xl font-bold'>POSTS</h1>
 
-                        <div className="grid grid-cols-1 ml-5 md:ml-10 md:grid-cols-2 lg:grid-cols-3 gap-x-40 gap-y-20">
-                            {blogs?.map((element)=>(
-                                <BlogCard key={element._id} blog={element}/>
-                            ))}
-                        </div>
+                        {blogs.length>0 ?
+                         <div className="grid grid-cols-1 ml-5 md:ml-10 md:grid-cols-2 lg:grid-cols-3 gap-x-40 gap-y-20">
+                         {blogs?.map((element)=>(
+                             <BlogCard key={element._id} blog={element}/>
+                         ))}
+                     </div>
+                        : 
+                        <div className="flex w-full items-center justify-center h-40">
+                        
+                        <Link to={"/add-blog"}>
+                        <button className='btn btn-info'>Create Your First Blog</button>
+                        </Link>
+                    </div>
+                        }
+
+                       
                     </div>
             </div>
         </Layout>

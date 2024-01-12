@@ -8,6 +8,7 @@ import AddBlog from './pages/AddBlog/AddBlog';
 import Profile from './pages/Profile/Profile';
 import EditCoverImage from './pages/EditProfile/EditCoverImage/EditCoverImage';
 import EditAvatar from './pages/EditProfile/EditAvatar/EditAvatar';
+import EditDetails from './pages/EditProfile/EditDetails/EditDetails';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
       <Route path='/profile' element={<Profile/>}/>
       <Route path='/update-coverImage' element={<EditCoverImage/>}/>
       <Route path='/update-avatar' element={<EditAvatar/>}/>
+      <Route path='/update-account' element={<EditDetails/>}/>
      </Routes>
     </>
   );
