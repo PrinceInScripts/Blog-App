@@ -5,11 +5,13 @@ import HomePage from '../../assets/HomePage.png'
 import { getAllBlogs, getUserBlogs } from '../../redux/slice/blogSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import BlogCard from '../../components/BlogCard/BlogCard';
+import about from '../../assets/about.png'
 
  function Home() {
     const dispatch=useDispatch()
        async function load(){
-      await dispatch(getAllBlogs())
+    const response=  await dispatch(getAllBlogs())
+    console.log(response);
       
        }
     useEffect(()=>{
@@ -23,12 +25,11 @@ import BlogCard from '../../components/BlogCard/BlogCard';
 
     return (
         <Layout>
-            <div className="pt-1 flex flex-col lg:flex-row items-center bg-bash-400 justify-center gap-10 mx-16 h-[80vh]">
+            <div className="pt-1 flex flex-col lg:flex-row ml-48 items-center bg-bash-400 justify-center gap-10 mx-16 h-[80vh]">
               <div className="lg:w-1/2 space-y-4">
                 <div> 
-                <p className="lg:text-4xl text-3xl font-bold">A Place To  </p>
-                <p className='lg:text-4xl text-3xl font-bold'>Read , Write</p>
-                <p className='lg:text-4xl text-3xl font-bold'>and Connect</p>
+                <p className="lg:text-4xl text-3xl font-bold">A Place To Read </p>
+                <p className='lg:text-4xl text-3xl font-bold'>Write and Connect</p>
                 </div>
                 <p className="lg:text-xl text-sm font-semibold py-6">
                    It is easy and free to post your thinking on any<br/> topics and connect with millions of readers.
@@ -62,6 +63,27 @@ import BlogCard from '../../components/BlogCard/BlogCard';
                 </div>
                 
               </div>
+            <div className='flex mt-20 bg-bash-400 items-center ml-60 gap-10 mx-16 min-h-[80vh]'>
+                <div className='w-1/2'>
+                     <img src={about} alt="" />
+                </div>
+                <div className="w-1/2 space-y-4">
+                        <div> 
+                            <p className="lg:text-4xl text-3xl font-bold">Publish, Grow, Gain  </p>
+                            <p className='lg:text-4xl text-3xl font-bold'>Knownlege in one Place</p>
+                        </div>
+                    <p className="lg:text-xl text-sm font-semibold py-6">
+                   If you have Knownlege to share,or a prospective<br/> to offer - Welcome home.
+                </p>
+                <div className="space-x-6 flex"> 
+                    <Link to="/signup">
+                    <button className="btn btn-success">
+                            Let's Start
+                        </button>
+                    </Link>
+                </div>
+              </div>
+            </div>
 
         </Layout>
     );

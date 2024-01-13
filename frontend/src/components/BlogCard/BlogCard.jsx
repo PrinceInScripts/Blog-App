@@ -34,6 +34,8 @@ function BlogCard({blog}) {
 
     const content=modifyContent(blog.content,150)
     const extractedDate = formatTime(blog.author.createdAt);
+
+    useEffect(()=>{console.log(blog)},[])
     return (
             
               <div className="card w-96 bg-base-100 shadow-xl">

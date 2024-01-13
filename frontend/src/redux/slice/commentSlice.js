@@ -8,16 +8,17 @@ const initialState = {
 
 export const addComment = createAsyncThunk("comments/addComment",async ({ slug, content }, { dispatch, getState }) => {
     try {
-      const response = await axiosInstance.post(`/comments/${slug}/add-comment`, {content,});
+      const response = axiosInstance.post(`/comment/${slug}/add-comment`, {content,});
+      console.log(response);
       toast.promise(response, {
         loading: "Wait! Adding a comment...",
         success: (data) => {
-          dispatch(getBlogComments(slug)); 
+         
           return data?.data?.message;
         },
         error: "Failed to add a comment",
       });
-      return response.data;
+      return (await response).data;
     } catch (error) {
       toast.error(error?.response?.data?.message);
     }
@@ -26,7 +27,7 @@ export const addComment = createAsyncThunk("comments/addComment",async ({ slug, 
 
 export const deleteComment = createAsyncThunk("comments/deleteComment", async (commentId, { dispatch, getState }) => {
     try {
-      const response = await axiosInstance.delete(`/comments/${commentId}/remove-comment`);
+      const response = await axiosInstance.delete(`/comment/${commentId}/remove-comment`);
       toast.promise(response, {
         loading: "Wait! Deleting a comment...",
         success: (data) => {
@@ -42,11 +43,11 @@ export const deleteComment = createAsyncThunk("comments/deleteComment", async (c
   }
 );
 
-export const getBlogComments = createAsyncThunk(
-  "comments/getBlogComments",
-  async (slug) => {
+export const getBlogComments = createAsyncThunk("comments/getBlogComments",async (slug) => {
     try {
-      const response = await axiosInstance.get(`/comments/${slug}`);
+      
+      const response = await axiosInstance.get(`/comment/${slug}`);
+      
       return response.data;
     } catch (error) {
       toast.error(error?.response?.data?.message);

@@ -8,7 +8,7 @@ const router=Router()
 
 router.route("/:slug/add-comment").post(isUserLoggedIn,checkBlogExist,addComment)
 router.route("/:commentId/remove-comment").delete(isUserLoggedIn,deleteComment)
-router.route("/:slug/").get(isUserLoggedIn,checkBlogExist,getBlogComments)
+router.route("/:slug").get(isUserLoggedIn,checkBlogExist,getBlogComments)
 
 
 

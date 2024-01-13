@@ -12,7 +12,8 @@ import EditDetails from './pages/EditProfile/EditDetails/EditDetails';
 import EditBlog from './pages/EditBlog/EditBlog/EditBlog';
 import DeleteBlog from './pages/EditBlog/DeleteBlog/DeleteBlog';
 import EditBlogImage from './pages/EditBlog/EditBlog/EditBlogImage';
-import BlogDetails from './components/BlogDetails/BlogDetails';
+import BlogDetails from './pages/BlogDetails/BlogDetails';
+
 
 function App() {
   return (

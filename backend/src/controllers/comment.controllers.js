@@ -78,7 +78,7 @@ const getBlogComments=asyncHandler(async (req,res)=>{
 
     const comments = await Comment.find({ blog: blog._id }).populate("owner");
 
-    return res.status(200).json(new ApiResponse(200, { comments: comments }, "Comments fetched successfully"));
+    return res.status(200).json(new ApiResponse(200, { data: comments }, "Comments fetched successfully"));
 })
 
 export {
