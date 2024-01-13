@@ -78,6 +78,10 @@ const getBlogComments=asyncHandler(async (req,res)=>{
 
     const comments = await Comment.find({ blog: blog._id }).populate("owner");
 
+    if (Array.isArray(comments) && comments.length > 0 && typeof comments[0] === 'object') {
+        comments.sort((a, b) => b.createdAt - a.createdAt);
+      }
+
     return res.status(200).json(new ApiResponse(200, { data: comments }, "Comments fetched successfully"));
 })
 

@@ -9,7 +9,9 @@ import {
   AiOutlineLike,
 } from "react-icons/ai";
 import { FaComment } from "react-icons/fa";
-import { getBlogComments, addComment } from "../../redux/slice/commentSlice";
+import { MdDelete } from "react-icons/md";
+
+import { getBlogComments, addComment, deleteComment } from "../../redux/slice/commentSlice";
 
 function formatTime(time) {
   const date = new Date(time);
@@ -31,7 +33,8 @@ function BlogDetails() {
   const comment = useSelector((state) => state.comment.comments);
   const [isRelevantVisible, setRelevantVisibility] = useState(false);
 
-  async function addCommentContent() {
+  async function addCommentContent(e) {
+    e.preventDefault()
     if (!commentContent) {
       toast.error("comment is required");
       return;
@@ -47,12 +50,20 @@ function BlogDetails() {
     }
   }
 
+  async function deletecomment(commentId){
+        const response=await dispatch(deleteComment(commentId))
+        if (response?.payload.success) {
+            await dispatch(getBlogComments(state.slug));
+            
+          }
+  }
+
   async function getComments() {
     const response = await dispatch(getBlogComments(state.slug));
     return response?.payload.data.data;
   }
 
-  const date = formatTime(state.createdAt);
+  const date = state ? formatTime(state.createdAt) : null;
 
   useEffect(() => {
     getComments();
@@ -130,7 +141,7 @@ function BlogDetails() {
             {/* //1div */}
             <div className="flex justify-between items-center gap-[60rem]">
               <div className="text-2xl font-serif">
-                Response ({state.commentCount})
+                Response ({comment.length})
               </div>
               <button onClick={toggleRelevantVisibility}>
                 <AiFillCloseCircle size={24} />
@@ -175,8 +186,8 @@ function BlogDetails() {
                 </button>
               </div>
             </div>
-
-            <div className="flex flex-col gap-10 ">
+            
+            <div key={state._id} className="flex flex-col gap-10 ">
               <h1 className="text-4xl font-serif font-semibold">
                 Most Relevent
               </h1>
@@ -199,12 +210,23 @@ function BlogDetails() {
                         </p>
                         <p className="">{formatTime(comment.createdAt)}</p>
                       </div>
+                     {comment.owner._id === user._id && 
+                      <div>
+                        
+                      <button onClick={()=>deletecomment(comment._id)} className="btn btn-outline btn-error ml-40"><MdDelete size={24}/></button>
                     </div>
-                    <div>{comment.content}</div>
+                     }
+                    </div>
+                    <div >
+                        <p className="text-xl font-mono">{comment.content}</p>
+                        
+                    </div>
                     <div className="flex items-center gap-2">
                       <AiOutlineLike size={24} />
                       <p>{comment.likesCount}</p>
                     </div>
+
+                    
                   </div>
                 ))}
             </div>

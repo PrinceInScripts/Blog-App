@@ -27,7 +27,7 @@ export const addComment = createAsyncThunk("comments/addComment",async ({ slug, 
 
 export const deleteComment = createAsyncThunk("comments/deleteComment", async (commentId, { dispatch, getState }) => {
     try {
-      const response = await axiosInstance.delete(`/comment/${commentId}/remove-comment`);
+      const response = axiosInstance.delete(`/comment/${commentId}/remove-comment`);
       toast.promise(response, {
         loading: "Wait! Deleting a comment...",
         success: (data) => {
@@ -36,7 +36,7 @@ export const deleteComment = createAsyncThunk("comments/deleteComment", async (c
         },
         error: "Failed to delete a comment",
       });
-      return response.data;
+      return (await response).data;
     } catch (error) {
       toast.error(error?.response?.data?.message);
     }
