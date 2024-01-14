@@ -60,7 +60,7 @@ function BlogDetails() {
     const response = await dispatch(
       addComment({ slug: state.slug, content: commentContent })
     );
-    console.log(response);
+    
     if (response?.payload.success) {
       await dispatch(getBlogComments(state.slug));
       setCommentContent("");
@@ -90,7 +90,7 @@ function BlogDetails() {
       const response = await dispatch(likeComment(commentId));
 
       if (response?.payload.success) {
-        setCommentLikes([...commentLikes, response.payload.data]); 
+        setCommentLikes([...commentLikes, response.payload.data]);
       }
     } catch (error) {
       console.error("Error adding like to comment:", error);
@@ -160,12 +160,7 @@ function BlogDetails() {
 
   useEffect(() => {
     getComments();
-    // getBlogLikes();
-
-    console.log(state.slug);
-    console.log(user);
-    console.log(comment);
-  }, [state.slug, user]);
+  }, [state?.slug, user]);
 
   const toggleRelevantVisibility = () => {
     setRelevantVisibility(!isRelevantVisible);

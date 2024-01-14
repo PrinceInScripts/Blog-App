@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
-import { isValidPassword } from '../../../helper/RegexMatcher';
-import { resetPassword } from '../../../redux/slice/authSlice';
-import Layout from '../../../Layout/Layout';
-import toast from 'react-hot-toast';
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { isValidPassword } from "../../../helper/RegexMatcher";
+import { resetPassword } from "../../../redux/slice/authSlice";
+import Layout from "../../../Layout/Layout";
+import toast from "react-hot-toast";
 
 function ResetPssword() {
-
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [data, setData] = useState({
@@ -27,10 +26,6 @@ function ResetPssword() {
 
   async function handleFormSubmit(e) {
     e.preventDefault();
-
-    console.log(data.password);
-    console.log(data.confirmPassword);
-    console.log(data.resetToken);
 
     if (!data.password || !data.confirmPassword || !data.resetToken) {
       toast.error("All fields are mandatory");
@@ -55,9 +50,9 @@ function ResetPssword() {
       navigate("/login");
     }
   }
-    return (
-        <Layout>
-             <div className="flex items-center justify-center h-[90vh]">
+  return (
+    <Layout>
+      <div className="flex items-center justify-center h-[90vh]">
         <form
           onSubmit={handleFormSubmit}
           className="flex flex-col justify-center gap-6 rounded-lg p-10 w-80 h-[26rem] shadow-[0_0_10px_black]"
@@ -96,16 +91,13 @@ function ResetPssword() {
             />
           </div>
 
-          <button
-            className="btn btn-info"
-            type="submit"
-          >
+          <button className="btn btn-info" type="submit">
             Reset Password
           </button>
         </form>
       </div>
-        </Layout>
-    );
+    </Layout>
+  );
 }
 
 export default ResetPssword;

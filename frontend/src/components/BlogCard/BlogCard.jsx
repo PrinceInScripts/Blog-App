@@ -35,17 +35,18 @@ function BlogCard({blog}) {
     const content=modifyContent(blog.content,150)
     const extractedDate = formatTime(blog.author.createdAt);
 
-    useEffect(()=>{console.log(blog)},[])
+   
     return (
             
-              <div className="card w-96 bg-base-100 shadow-xl">
+              <div className="card w-96 bg-base-100 shadow-xl " title={auth ? '' : 'Login to see the whole post'}>
                     <img src={blog.image} alt="Shoes" />
                     <div className="card-body ">
                         <h2 className="card-title">
                         {blog.title}
                         </h2>
                         <p>{content}
-                        <Link to={"/blog-details"} state={{...blog}}><button>Read more</button></Link>
+                        {auth &&  <Link to={"/blog-details"} state={{...blog}}><button>Read more</button></Link>}
+                       
                             
                         </p>
                         <div className="flex justify-between items-center">
