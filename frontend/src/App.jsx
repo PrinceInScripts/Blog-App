@@ -13,6 +13,8 @@ import EditBlog from './pages/EditBlog/EditBlog/EditBlog';
 import DeleteBlog from './pages/EditBlog/DeleteBlog/DeleteBlog';
 import EditBlogImage from './pages/EditBlog/EditBlog/EditBlogImage';
 import BlogDetails from './pages/BlogDetails/BlogDetails';
+import ForgotPassword from './pages/password/forgetPassword.jsx/ForgotPassword';
+import ResetPssword from './pages/password/resetPassword/ResetPssword';
 
 
 function App() {
@@ -33,6 +35,8 @@ function App() {
       <Route path='/update-image' element={<EditBlogImage/>}/>
       <Route path='/delete-blog' element={<DeleteBlog/>}/>
       <Route path='/blog-details' element={<BlogDetails/>}/>
+      <Route path='/forgotPassword' element={<ForgotPassword/>}/>
+      <Route path='/reset-password/:resetToken' element={<ResetPssword/>}/>
      </Routes>
     </>
   );
