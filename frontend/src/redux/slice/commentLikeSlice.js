@@ -10,11 +10,11 @@ const initialState = {
 
 export const likeComment = createAsyncThunk("commentLikes/likeComment", async (commentId, { dispatch, getState }) => {
   try {
-    const response =  axiosInstance.post(`/comment-like/${commentId}/like`);
+    const response = axiosInstance.post(`/comment-like/${commentId}/like`);
     toast.promise(response, {
       loading: "Wait! Liking a comment...",
       success: (data) => {
-       
+
         return data?.data?.message;
       },
       error: "Failed to like a comment",
@@ -27,7 +27,7 @@ export const likeComment = createAsyncThunk("commentLikes/likeComment", async (c
 
 export const unLikeComment = createAsyncThunk("commentLikes/unLikeComment", async (commentId, { dispatch, getState }) => {
   try {
-    const response =  axiosInstance.post(`/comment-like/${commentId}/unlike`);
+    const response = axiosInstance.post(`/comment-like/${commentId}/unlike`);
     toast.promise(response, {
       loading: "Wait! Unliking a comment...",
       success: (data) => {
