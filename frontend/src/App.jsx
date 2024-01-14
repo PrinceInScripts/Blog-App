@@ -15,6 +15,7 @@ import EditBlogImage from './pages/EditBlog/EditBlog/EditBlogImage';
 import BlogDetails from './pages/BlogDetails/BlogDetails';
 import ForgotPassword from './pages/password/forgetPassword.jsx/ForgotPassword';
 import ResetPssword from './pages/password/resetPassword/ResetPssword';
+import ChangePassword from './pages/password/changePassword/ChangePassword';
 
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
       <Route path='/blog-details' element={<BlogDetails/>}/>
       <Route path='/forgotPassword' element={<ForgotPassword/>}/>
       <Route path='/reset-password/:resetToken' element={<ResetPssword/>}/>
+      <Route path='/change-password' element={<ChangePassword/>}/>
      </Routes>
     </>
   );

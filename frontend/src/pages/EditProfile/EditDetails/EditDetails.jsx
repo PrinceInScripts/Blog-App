@@ -94,6 +94,14 @@ function EditDetails() {
                     id="email"
                     />
                 </div>
+
+                <div  className="absolute left-[48rem] bottom-52 w-32 border-none hover:border-none">
+                <Link to={"/change-password"}>
+                   <button className="text-accent link">
+                    Forgot Password?
+                    </button>
+                </Link>
+                </div>
                 
                         <button type='submit' className='btn w-full btn-info'>Update CoverImage</button>
                         </form>
