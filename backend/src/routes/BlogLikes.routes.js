@@ -8,6 +8,6 @@ const router=Router()
 
 router.route("/:slug/like").post(isUserLoggedIn,checkBlogExist,likeBlog)
 router.route("/:slug/unlike").post(isUserLoggedIn,checkBlogExist,unLikeBlog)
-router.route("/:slug").get(isUserLoggedIn,checkBlogExist,getBlogLikes)
+router.route("/:slug").get(isUserLoggedIn,getBlogLikes)
 
 export default router;

@@ -11,7 +11,18 @@ import {
 import { FaComment } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 
-import { getBlogComments, addComment, deleteComment } from "../../redux/slice/commentSlice";
+import {
+  getBlogComments,
+  addComment,
+  deleteComment,
+} from "../../redux/slice/commentSlice";
+import {
+  getLikedBlogs,
+  likeBlog,
+  unLikeBlog,
+  updateLikesCount,
+} from "../../redux/slice/blogLikeSlice";
+
 
 function formatTime(time) {
   const date = new Date(time);
@@ -27,6 +38,8 @@ function BlogDetails() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [commentContent, setCommentContent] = useState("");
+  const [isBlogLiked, setIsBlogLiked] = useState(false);
+  const [commentLikes, setCommentLikes] = useState([]);
 
   const { state } = useLocation();
   const user = useSelector((state) => state.auth.data);
@@ -34,7 +47,7 @@ function BlogDetails() {
   const [isRelevantVisible, setRelevantVisibility] = useState(false);
 
   async function addCommentContent(e) {
-    e.preventDefault()
+    e.preventDefault();
     if (!commentContent) {
       toast.error("comment is required");
       return;
@@ -50,32 +63,109 @@ function BlogDetails() {
     }
   }
 
-  async function deletecomment(commentId){
-        const response=await dispatch(deleteComment(commentId))
-        if (response?.payload.success) {
-            await dispatch(getBlogComments(state.slug));
-            
-          }
+  async function deletecomment(commentId) {
+    const response = await dispatch(deleteComment(commentId));
+    if (response?.payload.success) {
+      await dispatch(getBlogComments(state.slug));
+    }
   }
 
   async function getComments() {
     const response = await dispatch(getBlogComments(state.slug));
-    return response?.payload.data.data;
+  }
+
+  async function getCommentLikesForComment(commentId) {
+    const response = await dispatch(getCommentLikes(commentId));
+    if (response?.payload.success) {
+      setCommentLikes(response.payload.data.data);
+    }
+  }
+
+  async function addLikeCommentForComment(commentId) {
+    try {
+      const response = await dispatch(likeComment(commentId));
+
+      if (response?.payload.success) {
+        setCommentLikes([...commentLikes, response.payload.data]); // Assuming payload.data contains the liked comment information
+      }
+    } catch (error) {
+      console.error("Error adding like to comment:", error);
+    }
+  }
+
+  async function removeLikeCommentForComment(commentId) {
+    const response = await dispatch(unLikeComment(commentId));
+    if (response?.payload.success) {
+      const updatedCommentLikes = commentLikes.filter(
+        (commentLike) => commentLike._id !== response.payload.data._id
+      );
+      setCommentLikes(updatedCommentLikes);
+    }
+  }
+
+  async function getBlogLikes() {
+    const response = await dispatch(getLikedBlogs(state.slug));
+
+    if (response?.payload.success) {
+      const likedBlogs = response.payload.data.data;
+      const userLiked = likedBlogs.some((blog) => {
+        return blog.likedBy._id === user._id;
+      });
+      setIsBlogLiked(userLiked);
+    }
+  }
+
+  async function addLikeBlog() {
+    try {
+      const response = await dispatch(likeBlog(state.slug));
+
+      if (response?.payload.success) {
+        const likedBlog = response.payload.data;
+
+        await dispatch(
+          updateLikesCount({
+            blogId: likedBlog._id,
+            likesCount: likedBlog.likesCount,
+          })
+        );
+
+        setIsBlogLiked(true);
+      }
+    } catch (error) {
+      console.error("Error adding like:", error);
+    }
+  }
+
+  async function removeLikeBlog() {
+    const response = await dispatch(unLikeBlog(state.slug));
+    if (response?.payload.success) {
+      const unlikedBlog = response.payload.data;
+
+      await dispatch(
+        updateLikesCount({
+          blogId: unlikedBlog._id,
+          likesCount: unlikedBlog.likesCount,
+        })
+      );
+
+      setIsBlogLiked(false);
+    }
   }
 
   const date = state ? formatTime(state.createdAt) : null;
 
   useEffect(() => {
     getComments();
-    console.log(state);
+    // getBlogLikes();
+
+    console.log(state.slug);
     console.log(user);
     console.log(comment);
-  }, [state.slug]);
+  }, [state.slug, user]);
 
   const toggleRelevantVisibility = () => {
     setRelevantVisibility(!isRelevantVisible);
   };
-
   return (
     <Layout>
       <Link
@@ -122,8 +212,20 @@ function BlogDetails() {
           </div>
           <div className="bg-gray-200 gap-5 flex px-20 py-5">
             <div className="flex gap-2 items-center">
-              <AiFillLike size={24} className="cursor-pointer" />
-              <p>{state.likesCount}</p>
+              {isBlogLiked ? (
+                <AiFillLike
+                  onClick={removeLikeBlog}
+                  size={24}
+                  className="cursor-pointer text-blue-500"
+                />
+              ) : (
+                <AiOutlineLike
+                  onClick={addLikeBlog}
+                  size={24}
+                  className="cursor-pointer"
+                />
+              )}
+              <p>{isBlogLiked ? state.likesCount + 1 : state.likesCount}</p>
             </div>
             <div className="flex gap-2 items-center">
               <FaComment
@@ -186,11 +288,13 @@ function BlogDetails() {
                 </button>
               </div>
             </div>
-            
+
             <div key={state._id} className="flex flex-col gap-10 ">
-              <h1 className="text-4xl font-serif font-semibold">
-                Most Relevent
-              </h1>
+              {comment.length > 0 && (
+                <h1 className="text-4xl font-serif font-semibold">
+                  Most Relevent
+                </h1>
+              )}
 
               {comment.length > 0 &&
                 comment.map((comment) => (
@@ -210,23 +314,36 @@ function BlogDetails() {
                         </p>
                         <p className="">{formatTime(comment.createdAt)}</p>
                       </div>
-                     {comment.owner._id === user._id && 
-                      <div>
-                        
-                      <button onClick={()=>deletecomment(comment._id)} className="btn btn-outline btn-error ml-40"><MdDelete size={24}/></button>
+                      {comment.owner._id === user._id && (
+                        <div>
+                          <button
+                            onClick={() => deletecomment(comment._id)}
+                            className="btn btn-outline btn-error ml-40"
+                          >
+                            <MdDelete size={24} />
+                          </button>
+                        </div>
+                      )}
                     </div>
-                     }
-                    </div>
-                    <div >
-                        <p className="text-xl font-mono">{comment.content}</p>
-                        
+                    <div>
+                      <p className="text-xl font-mono">{comment.content}</p>
                     </div>
                     <div className="flex items-center gap-2">
-                      <AiOutlineLike size={24} />
-                      <p>{comment.likesCount}</p>
+                    {isCommentLiked ? (
+                      <AiFillLike
+                        onClick={() => removeLikeCommentForComment(commentItem._id)}
+                        size={24}
+                        className="cursor-pointer text-blue-500"
+                      />
+                    ) : (
+                      <AiOutlineLike
+                        onClick={() => addLikeCommentForComment(commentItem._id)}
+                        size={24}
+                        className="cursor-pointer"
+                      />
+                    )}
+                    <p>{isCommentLiked ? commentItem.likesCount + 1 : commentItem.likesCount}</p>
                     </div>
-
-                    
                   </div>
                 ))}
             </div>

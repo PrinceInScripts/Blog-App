@@ -10,10 +10,10 @@ import { asyncHandler } from "../utlis/AsyncHander.js";
 const likeBlog=asyncHandler(async (req,res)=>{
     const {slug}=req.params;
     const userId=req.user._id
-    
+   
     const blog=await Blog.findOne({slug})
 
-    console.log(blog);
+    
 
     if(!blog){
         throw new ApiError(404,"Blog not found")
@@ -100,6 +100,7 @@ const unLikeBlog=asyncHandler(async (req,res)=>{
 
 const getBlogLikes = asyncHandler(async (req, res) => {
     const {slug}=req.params;
+    console.log(slug);
 
     const blog=await Blog.findOne({slug})
 
@@ -108,9 +109,9 @@ const getBlogLikes = asyncHandler(async (req, res) => {
     }
 
 
-    const likes = await BlogLikes.find({ blog: blog._id }).populate('likedBy');
+    const likes = await BlogLikes.find({ blog: blog._id }).populate('likedBy blog');
 
-    return res.status(200).json(new ApiResponse(200, { likes: likes }, 'Blog likes fetched successfully'));
+    return res.status(200).json(new ApiResponse(200, { data: likes }, 'Blog likes fetched successfully'));
 });
 
 
