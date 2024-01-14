@@ -22,7 +22,11 @@ import {
   unLikeBlog,
   updateLikesCount,
 } from "../../redux/slice/blogLikeSlice";
-
+import {
+  getCommentLikes,
+  likeComment,
+  unLikeComment,
+} from "../../redux/slice/commentLikeSlice";
 
 function formatTime(time) {
   const date = new Date(time);
@@ -86,7 +90,7 @@ function BlogDetails() {
       const response = await dispatch(likeComment(commentId));
 
       if (response?.payload.success) {
-        setCommentLikes([...commentLikes, response.payload.data]); // Assuming payload.data contains the liked comment information
+        setCommentLikes([...commentLikes, response.payload.data]); 
       }
     } catch (error) {
       console.error("Error adding like to comment:", error);
@@ -329,20 +333,30 @@ function BlogDetails() {
                       <p className="text-xl font-mono">{comment.content}</p>
                     </div>
                     <div className="flex items-center gap-2">
-                    {isCommentLiked ? (
-                      <AiFillLike
-                        onClick={() => removeLikeCommentForComment(commentItem._id)}
-                        size={24}
-                        className="cursor-pointer text-blue-500"
-                      />
-                    ) : (
-                      <AiOutlineLike
-                        onClick={() => addLikeCommentForComment(commentItem._id)}
-                        size={24}
-                        className="cursor-pointer"
-                      />
-                    )}
-                    <p>{isCommentLiked ? commentItem.likesCount + 1 : commentItem.likesCount}</p>
+                      {commentLikes.some(
+                        (like) => like.commentId === comment._id
+                      ) ? (
+                        <AiFillLike
+                          onClick={() =>
+                            removeLikeCommentForComment(comment._id)
+                          }
+                          size={24}
+                          className="cursor-pointer text-blue-500"
+                        />
+                      ) : (
+                        <AiOutlineLike
+                          onClick={() => addLikeCommentForComment(comment._id)}
+                          size={24}
+                          className="cursor-pointer"
+                        />
+                      )}
+                      <p>
+                        {
+                          commentLikes.filter(
+                            (like) => like.commentId === comment._id
+                          ).length
+                        }
+                      </p>
                     </div>
                   </div>
                 ))}
