@@ -23,24 +23,24 @@ function Navbar() {
        }
     }
     return (
-        <div className="navbar px-20 bg-base-200">
+        <div className="navbar p-4 bg-base-200 flex items-center justify-between">
          <div className="flex-1">
-           <Link to='/' className="btn btn-ghost text-4xl font-bold">WriteWave</Link>
+           <Link to='/' className="btn btn-ghost lg:text-4xl text-2xl font-bold">WriteWave</Link>
          </div>
          <div className='mr-5'>
          <label className="swap swap-rotate ">
         <input type="checkbox" className="theme-controller" value="dark" />
-        <GoSun className="swap-on fill-current w-10 h-10"/>
-        <MdOutlineDarkMode className="swap-off fill-current w-10 h-10"/>
+        <GoSun className="swap-on fill-current  w-8 h-8 lg:w-10 lg:h-10"/>
+        <MdOutlineDarkMode className="swap-off fill-current w-8 h-8 lg:w-10 lg:h-10"/>
         </label>
          </div>
         
         {isLoggedIn?
-            <div className="flex-none gap-2">
+            <div className="flex items-center gap-2">
             <div>
               <Link to={"/add-blog"}><button className="btn btn-active btn-secondary">Add Blog</button></Link>
             </div>
-            <div className=" flex gap-2">
+            <div className=" lg:flex hidden gap-2">
             <input type="text" placeholder="Type here" className="input input-bordered input-primary w-full max-w-xs" />
             <button className="btn btn-outline btn-primary">
             <FaSearch />
@@ -48,7 +48,7 @@ function Navbar() {
             </div>
           <div className="dropdown dropdown-end">
             <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
-              <div className="w-10 rounded-full">
+              <div className="w-10 h-10 rounded-full">
                 <img alt="profile image" src={data?.avatar} />
               </div>
             </div>
