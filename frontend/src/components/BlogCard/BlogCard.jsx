@@ -63,10 +63,6 @@ function BlogCard({blog}) {
 
                             {blog.commentCount}
                             </div>
-                            <div className='flex gap-1'>
-                            <FaShareAlt className="cursor-pointer" size={24}/>
-                             {1}
-                            </div>
                             <div>
                           { extractedDate }
                             </div>

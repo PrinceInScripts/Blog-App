@@ -65,7 +65,7 @@ const unLikeBlog=asyncHandler(async (req,res)=>{
     }
 
     const existingLike=await BlogLikes.findOne({blog:blog._id,likedBy:userId})
-    console.log(existingLike);
+   
 
     if(!existingLike){
        return res
@@ -100,7 +100,6 @@ const unLikeBlog=asyncHandler(async (req,res)=>{
 
 const getBlogLikes = asyncHandler(async (req, res) => {
     const {slug}=req.params;
-    console.log(slug);
 
     const blog=await Blog.findOne({slug})
 

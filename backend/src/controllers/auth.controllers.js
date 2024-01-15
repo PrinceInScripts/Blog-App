@@ -181,7 +181,6 @@ const forgotPassword=asyncHandler (async (req,res)=>{
     const subject="Reset Password"
     const message=`You can reset your password by clicking <a href=${resetPasswordUrl} target="_blank">Reset Your Password</a>\nIf the above link does not work for some reason then copy paste this link in a tab ${resetPasswordUrl}.\nif you have not requested this, kindly ignore ` 
 
-    console.log(resetPasswordUrl);
     try {
         await sendEmail(email || user.email,subject,message)
 
@@ -211,8 +210,6 @@ const forgotPassword=asyncHandler (async (req,res)=>{
 const resetPassword=asyncHandler (async (req,res)=>{
      const {resetToken}=req.params;
      const password=req.body;
-     console.log(resetToken);
-     console.log(password);
 
      const forgetPasswordToken=crypto
                                     .createHash('sha256')

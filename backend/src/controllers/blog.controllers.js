@@ -174,9 +174,6 @@ const editBlogDetials=asyncHandler (async (req,res)=>{
     const {slug}=req.params;
     const {content}=req.body;
 
-    console.log(slug);
-    console.log(content);
-
     if(!content){
         throw new ApiError(404,"All fields are required")
     }

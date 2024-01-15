@@ -9,6 +9,7 @@ import about from "../../assets/about.png";
 
 function Home() {
   const dispatch = useDispatch();
+  const {isLoggedIn}=useSelector((state)=>state.auth)
   async function load() {
     const response = await dispatch(getAllBlogs());
    
@@ -24,7 +25,7 @@ function Home() {
 
   return (
     <Layout>
-      <div className="pt-1 flex flex-col lg:flex-row lg:ml-48 bg-bash-400 justify-center gap-10 mx-16 h-[80vh]">
+      <div className="pt-1 flex flex-col lg:flex-row lg:ml-48 bg-bash-400 justify-center items-center gap-10 mx-16 h-[80vh]">
         <div className="lg:w-1/2 w-full space-y-4">
           <div>
             <p className="lg:text-4xl text-3xl font-bold">A Place To Read </p>
@@ -35,7 +36,7 @@ function Home() {
             <br className="hidden lg:block"/> topics and connect with millions of readers.
           </p>
           <div className="space-x-6 flex">
-            <Link to="/signup">
+            <Link to="/all-blog">
               <button className="btn btn-success">Get Started</button>
             </Link>
             <Link to="/contact">

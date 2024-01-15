@@ -17,6 +17,7 @@ import ResetPssword from './pages/password/resetPassword/ResetPssword';
 import ChangePassword from './pages/password/changePassword/ChangePassword';
 import NotRequireAuth from './components/Auth/NotRequireAuth';
 import RequireAuth from './components/Auth/RequireAuth';
+import AllBlog from './pages/AllBlog.jsx/AllBlog';
 
 
 function App() {
@@ -43,7 +44,8 @@ function App() {
       </Route>
      
       <Route path='/blogcard' element={<BlogCard/>}/>
-      <Route path='/blog-details' element={<BlogDetails/>}/>
+       <Route path='/blog-details' element={<BlogDetails/>}/>
+      <Route path='/all-blog' element={<AllBlog/>}/>
       <Route path='/forgotPassword' element={<ForgotPassword/>}/>
       <Route path='/reset-password/:resetToken' element={<ResetPssword/>}/>
       

@@ -10,7 +10,6 @@ import { asyncHandler } from "../utlis/AsyncHander.js";
 const likeComment=asyncHandler (async (req,res)=>{
     const {commentId}=req.params;
     const userId=req.user._id;
-    console.log(userId);
 
     const comment=await Comment.findById(commentId)
 
