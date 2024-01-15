@@ -9,7 +9,7 @@ const initialState = {
   likedBlogs: [],
 };
 
-export const likeBlog = createAsyncThunk("likeBlogs/likeBlog", async (slug, { dispatch, getState }) => {
+export const likeBlog = createAsyncThunk("likeBlogs/likeBlog", async (slug) => {
   try {
     const response = axiosInstance.post(`/blog-like/${slug}/like`);
     toast.promise(response, {
@@ -59,15 +59,7 @@ const persistConfig = {
 const likeBlogsSlice = createSlice({
   name: "likeBlogs",
   initialState,
-  reducers: {
-    updateLikesCount: (state, action) => {
-      const { blogId, likesCount } = action.payload;
-      const likedBlog = state.likedBlogs.find(blog => blog._id === blogId);
-      if (likedBlog) {
-        likedBlog.likesCount = likesCount;
-      }
-    },
-  },
+  reducers: { },
   extraReducers: (builder) => {
     builder
       .addCase(getLikedBlogs.fulfilled, (state, action) => {

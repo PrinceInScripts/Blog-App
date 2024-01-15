@@ -60,7 +60,7 @@ function UserBlogCard({blog}) {
                         {blog.title}
                         </h2>
                         <p>{content}
-                            <button>Read more</button>
+                        <Link to={"/blog-details"} state={{...blog}}><button>Read more</button></Link>
                         </p>
                         <div className="flex justify-between items-center">
                           <div className="badge badge-outline">{blog.category}</div> 
@@ -68,15 +68,15 @@ function UserBlogCard({blog}) {
                         </div>
                         <div className='flex gap-5 justify-between items-center'>
                             <div className='flex gap-1'>
-                            <AiOutlineLike size={24}/>
+                            {!auth ? <Link to={"/login"}><AiOutlineLike className="cursor-pointer" size={24}/></Link> : <Link to={"/blog-details"} state={{...blog}}><AiOutlineLike className="cursor-pointer" size={24}/></Link>}
                             {blog.likesCount}
                             </div>
                             <div className='flex gap-1'>
-                            <FaRegComment size={24}/>
+                            {!auth ? <Link to={"/login"}><FaRegComment className="cursor-pointer" size={24}/></Link> : <Link to={"/blog-details"} state={{...blog}}><FaRegComment className="cursor-pointer" size={24}/></Link>}
                             {blog.commentCount}
                             </div>
                             <div className='flex gap-1'>
-                            <FaShareAlt size={24}/>
+                            <FaShareAlt className="cursor-pointer" size={24}/>
                              {1}
                             </div>
                             <div>

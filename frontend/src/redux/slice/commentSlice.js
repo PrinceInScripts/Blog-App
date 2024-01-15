@@ -46,7 +46,7 @@ export const getBlogComments = createAsyncThunk("comments/getBlogComments", asyn
   try {
 
     const response = await axiosInstance.get(`/comment/${slug}`);
-
+    console.log(response.data);
     return response.data;
   } catch (error) {
     toast.error(error?.response?.data?.message);
@@ -61,6 +61,7 @@ const commentSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getBlogComments.fulfilled, (state, action) => {
+        console.log(action);
         if (action?.payload) {
           state.comments = action.payload.data.data;
         }
