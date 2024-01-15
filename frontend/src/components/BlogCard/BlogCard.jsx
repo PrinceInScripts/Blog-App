@@ -3,7 +3,7 @@ import { AiOutlineLike } from "react-icons/ai";
 import { FaRegComment, FaTimes } from "react-icons/fa";
 import { FaShareAlt } from "react-icons/fa";
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function modifyContent(content,maxLength){
     if(content.length > maxLength){
@@ -28,7 +28,7 @@ function formatTime(time){
 
 function BlogCard({blog}) {
 
-
+    const navigate=useNavigate()
     const auth=useSelector((state)=>state?.auth.isLoggedIn)
     const blogs=useSelector((state)=>state.blog.userBlogs)
 
@@ -45,7 +45,7 @@ function BlogCard({blog}) {
                         {blog.title}
                         </h2>
                         <p>{content}
-                        {auth &&  <Link to={"/blog-details"} state={{...blog}}><button>Read more</button></Link>}
+                        <Link to={"/blog-details"} state={{...blog}}><button>Read more</button></Link>
                        
                             
                         </p>
@@ -55,15 +55,16 @@ function BlogCard({blog}) {
                         </div>
                         <div className='flex gap-5 justify-between items-center'>
                             <div className='flex gap-1'>
-                            <AiOutlineLike size={24}/>
+                           {!auth ? <Link to={"/login"}><AiOutlineLike className="cursor-pointer" size={24}/></Link> : <Link to={"/blog-details"} state={{...blog}}><AiOutlineLike className="cursor-pointer" size={24}/></Link>}
                             {blog.likesCount}
                             </div>
                             <div className='flex gap-1'>
-                            <FaRegComment size={24}/>
+                            {!auth ? <Link to={"/login"}><FaRegComment className="cursor-pointer" size={24}/></Link> : <Link to={"/blog-details"} state={{...blog}}><FaRegComment className="cursor-pointer" size={24}/></Link>}
+
                             {blog.commentCount}
                             </div>
                             <div className='flex gap-1'>
-                            <FaShareAlt size={24}/>
+                            <FaShareAlt className="cursor-pointer" size={24}/>
                              {1}
                             </div>
                             <div>
