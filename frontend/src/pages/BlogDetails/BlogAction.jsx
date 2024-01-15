@@ -62,7 +62,7 @@ function BlogActions({blog}) {
   async function load(){
     try {
          await dispatch(getLikedBlogs(blog.slug));
-         await getBlogComments(blog.slug)
+        await dispatch(getBlogComments(blog.slug))
         userLike();
       } catch (error) {
         console.error("Error loading liked blogs:", error);
@@ -71,6 +71,7 @@ function BlogActions({blog}) {
 
   useEffect(()=>{
     load()
+    console.log(comments);
     },[blog, user, likedBlogs])
 
   

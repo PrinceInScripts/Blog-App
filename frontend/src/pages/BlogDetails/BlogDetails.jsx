@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Layout from "../../Layout/Layout";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import BlogActions from "./BlogAction";
 import { nanoid } from "@reduxjs/toolkit";
+import { getBlogComments } from "../../redux/slice/commentSlice";
+import { getLikedBlogs } from "../../redux/slice/blogLikeSlice";
+import { useDispatch } from "react-redux";
 
 function formatTime(time) {
   const date = new Date(time);
@@ -16,9 +19,25 @@ function formatTime(time) {
 
 function BlogDetails() {
   const navigate = useNavigate();
+  const dispatch=useDispatch()
   const { state } = useLocation();
   const id = nanoid();
   const date = state ? formatTime(state.createdAt) : null;
+
+  
+  async function load(){
+    try {
+         await dispatch(getLikedBlogs(state.slug));
+        await dispatch(getBlogComments(state.slug))
+      } catch (error) {
+        console.error("Error loading liked blogs:", error);
+      }
+  }
+
+  useEffect(()=>{
+    load()
+    },[])
+
 
   return (
     <Layout>
@@ -34,7 +53,7 @@ function BlogDetails() {
       </Link>
       <div className="min-h-[90vh] flex flex-col gap-5 items-center py-10 justify-center w-3/4 m-auto">
         <div className="text-4xl w-full font-bold font-serif">
-          <h1>{state.title}</h1>
+          <h1>{state?.title}</h1>
         </div>
 
         <div className="bg-bash-100 w-full lg:px-10 flex items-center gap-3 lg:gap-5 py-5 shadow-[0_0_6px_black]">
