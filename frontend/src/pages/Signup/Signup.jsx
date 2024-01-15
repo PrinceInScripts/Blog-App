@@ -123,7 +123,7 @@ function Signup() {
   return (
     <Layout>
       <div className="flex overflow-x-auto items-center justify-center gap-20 h-[90vh]">
-        <div className="w-96 h-[38rem] p-6 rounded-lg flex flex-col justify-evenly bg-bash-600 shadow-[0_0_10px_black]">
+        <div className="w-96 h-[38rem] p-6 rounded-lg hidden lg:flex flex-col justify-evenly bg-bash-600 shadow-[0_0_10px_black]">
           <p className="text-sm">
             It is easy and free to your post your thinking on any topic and
             connect with thousand of readers

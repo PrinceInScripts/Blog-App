@@ -39,9 +39,7 @@ function Home() {
             <Link to="/all-blog">
               <button className="btn btn-success">Get Started</button>
             </Link>
-            <Link to="/contact">
-              <button className="btn btn-warning">Contact Us</button>
-            </Link>
+           
           </div>
         </div>
 

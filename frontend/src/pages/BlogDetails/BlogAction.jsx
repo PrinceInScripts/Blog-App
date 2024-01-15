@@ -17,13 +17,7 @@ function BlogActions({blog}) {
   const {likedBlogs}=useSelector((state)=>state.likeBlogs)
   const {comments}=useSelector((state)=>state.comment)
   const [isUserLiked,setUserLiked]=useState(false)
-  const [isRelevantVisible, setRelevantVisibility] = useState(false);
-
-
-  const toggleRelevantVisibility = () => {
-      setRelevantVisibility(!isRelevantVisible);
-    };
-
+  
 
   
 
@@ -71,7 +65,6 @@ function BlogActions({blog}) {
 
   useEffect(()=>{
     load()
-    console.log(comments);
     },[blog, user, likedBlogs])
 
   

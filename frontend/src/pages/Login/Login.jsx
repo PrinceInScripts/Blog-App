@@ -113,7 +113,7 @@ function Login() {
           </button>
         </form>
 
-        <div className="w-96 h-[30rem] p-6 rounded-lg flex items-center bg-bash-600 shadow-[0_0_10px_black]">
+        <div className="w-96 h-[30rem] p-6 rounded-lg hidden lg:flex items-center bg-bash-600 shadow-[0_0_10px_black]">
           <img src={logintool} alt="" />
         </div>
       </div>

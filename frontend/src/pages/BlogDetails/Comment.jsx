@@ -114,7 +114,7 @@ function Comment({comments,blog}) {
 
               {comments.length > 0 &&
                 comments.map((comment) => (
-                    <div className="px-10 py-5 flex flex-col gap-5 bg-bash-200 shadow-[0_0_2px_black]">
+                    <div key={nanoid()} className="px-10 py-5 flex flex-col gap-5 bg-bash-200 shadow-[0_0_2px_black]">
                     <div className="flex items-center gap-2">
                       <img
                         src={comment.owner.avatar}

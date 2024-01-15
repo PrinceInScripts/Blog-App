@@ -38,7 +38,7 @@ function BlogCard({blog}) {
    
     return (
             
-              <div className=" w-3/4 bg-base-100 shadow-xl flex flex-col lg:flex-row-reverse" >
+              <div className=" w-3/4 bg-base-100 rounded-md flex flex-col lg:flex-row-reverse shadow-[0_0_10px_black]" >
                     <img src={blog.image} alt="Shoes" className='w-96'/>
                     <div className="card-body ">
                     <div className="text-xl font-semibold">{blog.author.fullName}</div>
