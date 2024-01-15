@@ -33,13 +33,13 @@ function BlogCard({blog}) {
     const blogs=useSelector((state)=>state.blog.userBlogs)
 
     const content=modifyContent(blog.content,150)
-    const extractedDate = formatTime(blog.author.createdAt);
+    const extractedDate = formatTime(blog.createdAt);
 
    
     return (
             
               <div className="card w-96 bg-base-100 shadow-xl " title={auth ? '' : 'Login to see the whole post'}>
-                    <img src={blog.image} alt="Shoes" />
+                    <img src={blog.image} alt="Shoes" className='w-full h-52'/>
                     <div className="card-body ">
                         <h2 className="card-title">
                         {blog.title}

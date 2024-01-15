@@ -78,7 +78,7 @@ function BlogDetails() {
         <div className="flex flex-col w-full gap-5">
           <img className="h-96 object-cover" src={state?.image} alt="" />
 
-          <div className="h-60 content-wrapper overflow-auto text-center">
+          <div className="min-h-30 content-wrapper overflow-auto ">
             <p className="font-serif">
               <span className="font-semibold font-serif">
                 {state?.author.fullName}
