@@ -4,7 +4,8 @@ import toast from 'react-hot-toast'
 
 const initialState = {
     isLoggedIn: localStorage.getItem("isLoggedIn") || false,
-    data: JSON.parse(localStorage.getItem("data")) || {}
+    data: JSON.parse(localStorage.getItem("data")) || {},
+    role:localStorage.getItem("role") || "",
 }
 
 export const createAccount = createAsyncThunk("/auth/signup", async (data) => {
@@ -215,7 +216,8 @@ const authSlice = createSlice({
                 if (user) {
                     localStorage.setItem('data', JSON.stringify(user))
                     localStorage.setItem('isLoggedIn', true)
-
+                    localStorage.setItem('role', user.role);
+                    state.role = user.role;
                     state.isLoggedIn = true;
                     state.data = user;
                 }
