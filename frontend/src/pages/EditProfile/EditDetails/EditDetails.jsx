@@ -95,7 +95,7 @@ function EditDetails() {
             />
           </div>
 
-          <div className="absolute left-[48rem] bottom-52 w-32 border-none hover:border-none">
+          <div className="absolute lg:left-[48rem] bottom-52 w-32 border-none hover:border-none">
             <Link to={"/change-password"}>
               <button className="text-accent link">Forgot Password?</button>
             </Link>

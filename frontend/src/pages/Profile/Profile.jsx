@@ -44,23 +44,23 @@ function Profile() {
     <Layout>
       <div className="min-h-[100vh] flex flex-col items-center m-auto pb-20">
         {user.coverImage ? (
-          <div className=" w-3/4 h-80">
+          <div className=" lg:w-3/4 w-full h-80">
             <img src={user.coverImage} alt="" className="w-full h-80" />
-            <div className="absolute w-10 h-10 rounded-full flex items-center justify-center bg-white right-52 cursor-pointer top-20 text-black">
+            <div className="absolute w-10 h-10 rounded-full flex items-center justify-center bg-white right-0 lg:right-52 cursor-pointer top-20 text-black">
               <Link to={"/update-coverImage"}>
                 <MdModeEditOutline size={25} />
               </Link>
             </div>
           </div>
         ) : (
-          <div className="border-2 cursor-pointer w-3/4 h-80 flex items-center justify-center bg-bash-200 text-gray-500">
+          <div className="border-2 cursor-pointer w-full lg:w-3/4 h-80 flex items-center justify-center bg-bash-200 text-gray-500">
             <Link to={"/update-coverImage"}>
               <FaCamera className="" size={80} />
             </Link>
           </div>
         )}
 
-        <div className="flex mt-10 justify-start gap-20  ">
+        <div className="flex flex-col lg:flex-row mt-10 justify-start gap-20  ">
           <div className="">
             <img src={user.avatar} alt="" className="w-56 h-56 rounded-full" />
             <div className="relative left-24 bottom-10 w-10 h-10 rounded-full flex items-center justify-center bg-white cursor-pointer text-black">
@@ -83,11 +83,11 @@ function Profile() {
           </div>
         </div>
 
-        <div className="flex flex-col justify-start mt-20 items-start w-3/4 gap-10 m-auto">
+        <div className="flex flex-col justify-start mt-20 items-start lg:w-3/4 gap-10 m-auto">
           <h1 className="text-center text-4xl font-bold">POSTS</h1>
 
           {blogs.length > 0 ? (
-            <div className="grid grid-cols-1 md:ml-10 md:grid-cols-2 lg:grid-cols-3 gap-x-40 gap-y-20">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-40 gap-y-20">
               {blogs?.map((element) => (
                 <UserBlogCard key={element._id} blog={element} />
               ))}

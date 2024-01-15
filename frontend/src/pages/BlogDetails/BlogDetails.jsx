@@ -22,13 +22,13 @@ function BlogDetails() {
   const dispatch=useDispatch()
   const { state } = useLocation();
   const id = nanoid();
-  const date = state ? formatTime(state.createdAt) : null;
+  const date = state ? formatTime(state?.createdAt) : null;
 
   
   async function load(){
     try {
-         await dispatch(getLikedBlogs(state.slug));
-        await dispatch(getBlogComments(state.slug))
+         await dispatch(getLikedBlogs(state?.slug));
+        await dispatch(getBlogComments(state?.slug))
       } catch (error) {
         console.error("Error loading liked blogs:", error);
       }
@@ -59,31 +59,31 @@ function BlogDetails() {
         <div className="bg-bash-100 w-full lg:px-10 flex items-center gap-3 lg:gap-5 py-5 shadow-[0_0_6px_black]">
           <div className="rounded-full">
             <img
-              src={state.author.avatar}
+              src={state?.author.avatar}
               alt=""
               className="rounded-full w-12 h-12"
             />
           </div>
           <div>
-            <p className="lg:text-xl text-xs font-semibold">{state.author.username}</p>
+            <p className="lg:text-xl text-xs font-semibold">{state?.author.username}</p>
           </div>
           <div>
             <p className="lg:text-lg text-xs font-serif">{date}</p>
           </div>
           <div>
-            <p className=" lg:text-lg text-xs font-mono">{state.readTime} min read</p>
+            <p className=" lg:text-lg text-xs font-mono">{state?.readTime} min read</p>
           </div>
         </div>
 
         <div className="flex flex-col w-full gap-5">
-          <img className="h-96 object-cover" src={state.image} alt="" />
+          <img className="h-96 object-cover" src={state?.image} alt="" />
 
           <div className="h-60 content-wrapper overflow-auto text-center">
             <p className="font-serif">
               <span className="font-semibold font-serif">
-                {state.author.fullName}
+                {state?.author.fullName}
               </span>{" "}
-              - {state.content}
+              - {state?.content}
             </p>
           </div>
 
