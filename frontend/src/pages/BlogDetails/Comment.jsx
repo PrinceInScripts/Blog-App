@@ -138,27 +138,7 @@ function Comment({comments,blog}) {
                     <div>
                       <p className="text-xl font-mono">{comment.content}</p>
                     </div>
-                    {/* <div className="flex items-center gap-2">
-                      {commentLikes.some((like) => like.commentId === comment._id) ? (
-                        <AiFillLike
-                          onClick={() => removeLike(comment._id)}
-                          size={24}
-                          className="cursor-pointer text-blue-500"
-                        />
-                      ) : (
-                        <AiOutlineLike
-                          onClick={() => addLike(comment._id)}
-                          size={24}
-                          className="cursor-pointer"
-                        />
-                      )}
-                      <p>
-                        {
-                          commentLikes.filter((like) => like.commentId === comment._id)
-                            .length
-                        }
-                      </p>
-                    </div> */}
+                   
               
                     
                   </div>

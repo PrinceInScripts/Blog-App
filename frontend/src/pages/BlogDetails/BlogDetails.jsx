@@ -1,18 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Layout from "../../Layout/Layout";
-import { useDispatch, useSelector } from "react-redux";
-import { AiOutlineArrowLeft, AiFillCloseCircle } from "react-icons/ai";
+import { AiOutlineArrowLeft } from "react-icons/ai";
 import BlogActions from "./BlogAction";
 import { nanoid } from "@reduxjs/toolkit";
-
-import {
-  getBlogComments,
-  addComment,
-  deleteComment,
-} from "../../redux/slice/commentSlice";
-import Comment from "./Comment";
-import { getLikedBlogs } from "../../redux/slice/blogLikeSlice";
 
 function formatTime(time) {
   const date = new Date(time);
@@ -20,38 +11,15 @@ function formatTime(time) {
     day: "numeric",
     month: "short",
   };
-
   return date.toLocaleDateString("en-US", options);
 }
 
 function BlogDetails() {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [commentContent, setCommentContent] = useState("");
-  const [commentLikes, setCommentLikes] = useState([]);
   const { state } = useLocation();
-  const user = useSelector((state) => state.auth.data);
-  const comment = useSelector((state) => state.comment.comments);
-  const [isRelevantVisible, setRelevantVisibility] = useState(false);
-  const id=nanoid()
-
+  const id = nanoid();
   const date = state ? formatTime(state.createdAt) : null;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      await dispatch(getBlogComments(state.slug));
-    };
-
-    fetchData();
-  }, [state?.slug, user]);
-
-  const toggleRelevantVisibility = () => {
-    setRelevantVisibility(!isRelevantVisible);
-  };
-
-  
-
-  
   return (
     <Layout>
       <Link
@@ -69,7 +37,7 @@ function BlogDetails() {
           <h1>{state.title}</h1>
         </div>
 
-        <div className="bg-bash-100 w-full px-10 flex items-center gap-5 py-5 shadow-[0_0_6px_black]">
+        <div className="bg-bash-100 w-full lg:px-10 flex items-center gap-3 lg:gap-5 py-5 shadow-[0_0_6px_black]">
           <div className="rounded-full">
             <img
               src={state.author.avatar}
@@ -78,13 +46,13 @@ function BlogDetails() {
             />
           </div>
           <div>
-            <p className="text-xl font-semibold">{state.author.username}</p>
+            <p className="lg:text-xl text-xs font-semibold">{state.author.username}</p>
           </div>
           <div>
-            <p className="text-lg font-serif">{date}</p>
+            <p className="lg:text-lg text-xs font-serif">{date}</p>
           </div>
           <div>
-            <p className="font-mono">{state.readTime} min read</p>
+            <p className=" lg:text-lg text-xs font-mono">{state.readTime} min read</p>
           </div>
         </div>
 
@@ -100,12 +68,8 @@ function BlogDetails() {
             </p>
           </div>
 
-          <BlogActions
-            key={id} blog={state}
-          />
+          <BlogActions key={id} blog={state} />
         </div>
-
-       
       </div>
     </Layout>
   );

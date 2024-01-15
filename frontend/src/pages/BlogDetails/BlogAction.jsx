@@ -77,7 +77,7 @@ function BlogActions({blog}) {
 
   return (
     <>
-    <div className="bg-gray-200 gap-5 flex px-20 py-5">
+    <div className="bg-bash-200 gap-5 flex px-20 py-5 shadow-[0_0_5px_black]">
 
       
       <div className="flex gap-2 items-center">

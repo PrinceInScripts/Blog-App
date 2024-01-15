@@ -55,22 +55,33 @@ function Signup() {
   async function onFormSubmit(e) {
     e.preventDefault();
 
-    if (
-      !signupDetails.fullName ||
-      !signupDetails.password ||
-      !signupDetails.username ||
-      !signupDetails.email ||
-      !signupDetails.avatar
-    ) {
-      toast.error("Please fill all the detials");
+    if(!signupDetails.fullName){
+      toast.error("FullName is required")
+      return;
+    }
+    if( !signupDetails.username ){
+      toast.error("username is required")
+      return;
+    }
+    if( !signupDetails.email){
+      toast.error("email is required")
+      return;
+    }
+    if( !signupDetails.password){
+      toast.error("password is required")
+      return;
+    }
+    if( !signupDetails.avatar){
+      toast.error("avatar is required")
       return;
     }
 
-    if (
-      signupDetails.fullName.length < 5 ||
-      signupDetails.username.length < 5
-    ) {
+    if (signupDetails.fullName.length < 5 ) {
       toast.error("Name should be atleast of 5 charcter");
+      return;
+    }
+    if (signupDetails.username.length < 5) {
+      toast.error("username should be atleast of 5 charcter");
       return;
     }
 
