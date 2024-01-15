@@ -48,13 +48,21 @@ function AddBlog() {
   async function onFormSubmit(e) {
     e.preventDefault();
   
-    if (
-      !userInput.title ||
-      !userInput.content ||
-      !userInput.category ||
-      !userInput.image
-    ) {
-      toast.error("All fileds are mandatory");
+
+    if( !userInput.title){
+      toast.error("title is required");
+      return;
+    }
+    if( !userInput.content){
+      toast.error("content is required");
+      return;
+    }
+    if(!userInput.category ){
+      toast.error("category is required");
+      return;
+    }
+    if(  !userInput.image){
+      toast.error("image is required");
       return;
     }
 
@@ -90,7 +98,7 @@ function AddBlog() {
       <div className="min-h-[100vh] flex items-center justify-center">
         <form
           onSubmit={onFormSubmit}
-          className="flex flex-col px-20 gap-5 py-10 justify-center w-1/2"
+          className="flex flex-col px-20 gap-5 w-full py-10 justify-center lg:w-1/2"
         >
           <Link
             onClick={() => navigate(-1)}
@@ -131,7 +139,7 @@ function AddBlog() {
                 });
               }}
               config={{
-                placeholder: "Start typing your blog here...",
+                placeholder: "Start typing blog here...",
               }}
             />
           </div>

@@ -24,15 +24,15 @@ function Home() {
 
   return (
     <Layout>
-      <div className="pt-1 flex flex-col lg:flex-row ml-48 items-center bg-bash-400 justify-center gap-10 mx-16 h-[80vh]">
-        <div className="lg:w-1/2 space-y-4">
+      <div className="pt-1 flex flex-col lg:flex-row lg:ml-48 bg-bash-400 justify-center gap-10 mx-16 h-[80vh]">
+        <div className="lg:w-1/2 w-full space-y-4">
           <div>
             <p className="lg:text-4xl text-3xl font-bold">A Place To Read </p>
             <p className="lg:text-4xl text-3xl font-bold">Write and Connect</p>
           </div>
           <p className="lg:text-xl text-sm font-semibold py-6">
             It is easy and free to post your thinking on any
-            <br /> topics and connect with millions of readers.
+            <br className="hidden lg:block"/> topics and connect with millions of readers.
           </p>
           <div className="space-x-6 flex">
             <Link to="/signup">
@@ -48,16 +48,16 @@ function Home() {
           <img src={HomePage} alt="Home Page" />
         </div>
       </div>
-      <div className=" flex flex-col bg-bash-400 gap-10 mx-16 min-h-[90vh]">
+      <div className=" flex flex-col bg-bash-400 gap-10 lg:mx-16 min-h-[90vh]">
         <h1 className="text-4xl font-bold">Featured Blog</h1>
-        <div className="grid grid-cols-1 ml-5 md:ml-10 md:grid-cols-2 lg:grid-cols-3 gap-y-20 " title={auth ? '' : 'Login to see the whole post'}>
+        <div className="grid grid-cols-1 lg:ml-5 md:ml-10 md:grid-cols-2 lg:grid-cols-3 gap-y-20 " title={auth ? '' : 'Login to see the whole post'}>
           {featuredBlog?.map((element) => (
             <BlogCard key={element._id} blog={element} />
           ))}
         </div>
       </div>
-      <div className="flex mt-20 bg-bash-400 items-center ml-60 gap-10 mx-16 min-h-[80vh]">
-        <div className="w-1/2">
+      <div className="flex mt-20 bg-bash-400 items-center justify-center lg:ml-60 gap-10 lg:mx-16 min-h-[80vh]">
+        <div className="w-1/2 hidden lg:flex">
           <img src={about} alt="" />
         </div>
         <div className="w-1/2 space-y-4">
