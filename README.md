@@ -7,8 +7,6 @@
       - [Backend](#backend)
       - [Database](#database)
   * [📸 Screenshots](#screenshots)
-  * [Author](#author)
-  * [License](#license)
 
 
 ## Configuration and Setup
