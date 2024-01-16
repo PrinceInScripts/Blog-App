@@ -18,7 +18,7 @@ function Navbar() {
     async function onLogout(e){
        e.preventDefault()
        const response=await dispatch(logout())
-       if(response?.payload?.data.success){
+       if(response?.payload){
         navigate('/')
        }
     }

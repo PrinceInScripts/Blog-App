@@ -17,6 +17,7 @@ function BlogActions({blog}) {
   const {likedBlogs}=useSelector((state)=>state.likeBlogs)
   const {comments}=useSelector((state)=>state.comment)
   const [isUserLiked,setUserLiked]=useState(false)
+  const {isLoggedIn} = useSelector((state)=>state.auth)
   
 
   
@@ -36,7 +37,7 @@ function BlogActions({blog}) {
 
   async function removeLikeBlog() {
     try {
-        const response = await dispatch(unLikeBlog(blog.slug));
+        const response = await dispatch(unLikeBlog(blog?.slug));
         if (response?.payload.success) {
           load();
         }
@@ -55,8 +56,8 @@ function BlogActions({blog}) {
 
   async function load(){
     try {
-         await dispatch(getLikedBlogs(blog.slug));
-        await dispatch(getBlogComments(blog.slug))
+         await dispatch(getLikedBlogs(blog?.slug));
+        await dispatch(getBlogComments(blog?.slug))
         userLike();
       } catch (error) {
         console.error("Error loading liked blogs:", error);
@@ -97,13 +98,14 @@ function BlogActions({blog}) {
           size={24}
           className="cursor-pointer"
         />
-        <p>{comments.length}</p>
+        <p>{comments?.length}</p>
         
       </div>
 
      
     </div>
-    <Comment key={blog._id} comments={comments} blog={blog} />
+    {isLoggedIn &&  <Comment key={blog?._id} comments={comments} blog={blog} />}
+   
     </>
 
     

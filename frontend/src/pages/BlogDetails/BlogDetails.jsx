@@ -52,7 +52,7 @@ function BlogDetails() {
         <AiOutlineArrowLeft />
       </Link>
       <div className="min-h-[90vh] flex flex-col gap-5 items-center py-10 justify-center w-3/4 m-auto">
-        <div className="text-4xl w-full font-bold font-serif">
+        <div className="lg:text-4xl w-full font-bold font-serif">
           <h1>{state?.title}</h1>
         </div>
 
@@ -76,7 +76,7 @@ function BlogDetails() {
         </div>
 
         <div className="flex flex-col w-full gap-5">
-          <img className="h-96 object-cover" src={state?.image} alt="" />
+          <img className="lg:h-[30rem] object-cover" src={state?.image} alt="" />
 
           <div className="min-h-30 content-wrapper overflow-auto ">
             <p className="font-serif">

@@ -122,14 +122,14 @@ function Comment({comments,blog}) {
                         className="w-12 h-12 rounded-full"
                       />
                       <div>
-                        <p className="text-xl font-serif">{comment.owner.fullName}</p>
+                        <p className="lg:text-xl text-xs font-serif">{comment.owner.fullName}</p>
                         <p className="">{formatTime(comment.createdAt)}</p>
                       </div>
                       {comment.owner._id === user._id && (
                         <div>
                           <button
                             onClick={() => deleteCommentt(comment._id)}
-                            className="btn btn-outline btn-error ml-40"
+                            className="btn btn-outline btn-error lg:ml-40"
                           >
                             <MdDelete size={24} />
                           </button>

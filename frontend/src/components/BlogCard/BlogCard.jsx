@@ -38,7 +38,7 @@ function BlogCard({blog}) {
    
     return (
         <Link to={"/blog-details"} state={{...blog}}>
-              <div className="card group  w-96 bg-base-100 shadow-xl  rounded-lg cursor-pointer overflow-hidden  transition-transform transform hover:scale-105 relative" >
+              <div className="card group h-full w-96 bg-base-100 shadow-xl  rounded-lg cursor-pointer overflow-hidden  transition-transform transform hover:scale-105 relative" >
                     <img src={blog.image} alt="Shoes" className='w-full h-52'/>
                     <div className="card-body ">
                         <h2 className="card-title">
@@ -71,7 +71,7 @@ function BlogCard({blog}) {
                       
                     </div>
                     </div>
-                    </Link>
+           </Link>
         
     );
 }
