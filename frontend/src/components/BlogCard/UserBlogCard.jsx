@@ -48,8 +48,8 @@ function UserBlogCard({blog}) {
     const extractedDate = formatTime(blog.author.createdAt);
 
     return (
-            
-              <div className="card w-96 bg-base-100 shadow-xl">
+        <Link to={"/blog-details"} state={{...blog}}>
+        <div className="card group  w-96 bg-base-100 shadow-xl  rounded-lg cursor-pointer overflow-hidden  transition-transform transform hover:scale-105 relative" >
                     <img src={blog.image} alt="Shoes" />
                     <div className="card-body ">
                         <h2 className="card-title">
@@ -95,7 +95,7 @@ function UserBlogCard({blog}) {
                        
                     </div>
                     </div>
-           
+                    </Link>
         
     );
 }
