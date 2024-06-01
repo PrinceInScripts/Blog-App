@@ -73,7 +73,7 @@ function Home() {
             <br /> to offer - Welcome home.
           </p>
           <div className="space-x-6 flex">
-            <Link to="/signup">
+            <Link to="/add-blog">
               <button className="btn btn-success">Let's Start</button>
             </Link>
           </div>
