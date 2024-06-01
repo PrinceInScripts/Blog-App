@@ -19,70 +19,14 @@ const likeBlog=asyncHandler(async (req,res)=>{
         throw new ApiError(404,"Blog not found")
     }
 
-    const existingLike=await BlogLikes.findOne({blog:blog._id,likedBy:userId})
-
-    if(existingLike){
-        return res
-                 .status(200)
-                 .json(
-                    new ApiResponse(
-                        200,
-                        {},
-                        "User already Liked it"
-                        )
-                 )
-    }
+    
 
     const newLike=await BlogLikes.create({
         blog:blog._id,
         likedBy:userId
     })
 
-    await blog.like(newLike._id)
-
-    return res
-              .status(200)
-              .json(
-                new ApiResponse(
-                    200,
-                    {like:newLike},
-                    "Blog liked successfully"
-                )
-              )
-})
-
-
-// ++++++++++++++++++++++++++ unLikeBlog ++++++++++++++++++++++++++
-
-const unLikeBlog=asyncHandler(async (req,res)=>{
-    const {slug}=req.params;
-    const userId=req.user._id
-
-    const blog=await Blog.findOne({slug})
-
-    if(!blog){
-        throw new ApiError(404,"Blog not found")
-    }
-
-    const existingLike=await BlogLikes.findOne({blog:blog._id,likedBy:userId})
-   
-
-    if(!existingLike){
-       return res
-                .status(200)
-                .json(
-                    new ApiResponse(
-                        200,
-                        {},
-                        "User have not liked these post"
-                    )
-                )
-        
-    }
-
-    await BlogLikes.findByIdAndDelete(existingLike._id)
-
-    await blog.unlike(existingLike._id)
+    
 
     return res
               .status(200)
@@ -90,10 +34,14 @@ const unLikeBlog=asyncHandler(async (req,res)=>{
                 new ApiResponse(
                     200,
                     {},
-                    "Blog unliked successfully"
+                    ""
                 )
               )
 })
+
+
+// ++++++++++++++++++++++++++ unLikeBlog ++++++++++++++++++++++++++
+
 
 
 // ++++++++++++++++++++++++++ getBlogLikes ++++++++++++++++++++++++++
@@ -110,13 +58,12 @@ const getBlogLikes = asyncHandler(async (req, res) => {
 
     const likes = await BlogLikes.find({ blog: blog._id }).populate('likedBy blog');
 
-    return res.status(200).json(new ApiResponse(200, { data: likes }, 'Blog likes fetched successfully'));
+    return res.status(200).json(new ApiResponse(200, { data: likes }, ''));
 });
 
 
 export {
     likeBlog,
-    unLikeBlog,
     getBlogLikes
 }
 
