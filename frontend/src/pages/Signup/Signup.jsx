@@ -121,50 +121,43 @@ function Signup() {
   }
 
   return (
+       
     <Layout>
-      <div className="flex overflow-x-auto items-center justify-center gap-20 h-[90vh]">
-        <div className="w-96 h-[38rem] p-6 rounded-lg hidden lg:flex flex-col justify-evenly bg-bash-600 shadow-[0_0_10px_black]">
-          <p className="text-sm">
-            It is easy and free to your post your thinking on any topic and
-            connect with thousand of readers
-          </p>
-          <img src={signup} alt="" />
-        </div>
-        <form
-          onSubmit={onFormSubmit}
-          noValidate
-          className="flex flex-col justify-center gap-3 bg-bash-600 rounded-lg p-6 w-96 h-[38rem]  shadow-[0_0_10px_black]"
-        >
-          <p className="">
-            have an account ?{" "}
-            <Link to="/login" className="cusror-pointer text-accent">
-              Login
-            </Link>
-          </p>
+    <div className="flex items-center justify-center h-[90vh] ">
+      <div className="flex flex-col justify-center p-8 rounded-lg w-[40%]">
+        <h1 className="text-3xl font-bold text-center mb-6">Sign Up</h1>
+        <p className="text-center mb-6">
+          Already have an account?{" "}
+          <Link to="/login" className="text-blue-500">
+            Login
+          </Link>
+        </p>
 
-          <h1 className="text-2xl font-bold">Welcome to the WriteWave </h1>
-          <label htmlFor="image_uploads" className="cursor-pointer">
-            {previewImage ? (
-              <img
-                className="w-24 h-24 m-auto rounded-full ring ring-primary ring-offset-base-100 ring-offset-2"
-                src={previewImage}
-                alt=""
-              />
-            ) : (
-              <BsPersonCircle className="w-24 h-24 rounded-full m-auto" />
-            )}
-          </label>
-          <input
-            onChange={handleImage}
-            type="file"
-            className="hidden"
-            name="image_uploads"
-            id="image_uploads"
-            accept=".jpg, .jpeg, .png, .svg"
-          />
+        <form onSubmit={onFormSubmit} noValidate className="space-y-4">
+          <div className="text-center">
+            <label htmlFor="image_uploads" className="cursor-pointer">
+              {previewImage ? (
+                <img
+                  className="w-24 h-24 mx-auto rounded-full ring-2 ring-blue-500"
+                  src={previewImage}
+                  alt="Avatar Preview"
+                />
+              ) : (
+                <BsPersonCircle className="w-24 h-24 mx-auto text-gray-300" />
+              )}
+            </label>
+            <input
+              onChange={handleImage}
+              type="file"
+              className="hidden"
+              name="image_uploads"
+              id="image_uploads"
+              accept=".jpg, .jpeg, .png, .svg"
+            />
+          </div>
 
-          <div className="flex flex-col gap-1">
-            <label htmlFor="username" className="font-semibold">
+          <div>
+            <label htmlFor="username" className="block text-sm font-medium text-gray-700">
               Username
             </label>
             <input
@@ -173,15 +166,15 @@ function Signup() {
               required
               type="text"
               name="username"
-              className="input input-bordered w-full max-w-xs"
-              placeholder="enter your username..."
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              placeholder="Enter your username..."
               id="username"
             />
           </div>
 
-          <div className="flex flex-col gap-1">
-            <label htmlFor="fullName" className="font-semibold">
-              Name
+          <div>
+            <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">
+              Full Name
             </label>
             <input
               onChange={handleUserInput}
@@ -189,13 +182,14 @@ function Signup() {
               required
               type="text"
               name="fullName"
-              className="input input-bordered w-full max-w-xs"
-              placeholder="enter your fullName..."
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              placeholder="Enter your full name..."
               id="fullName"
             />
           </div>
-          <div className="flex flex-col gap-1">
-            <label htmlFor="email" className="font-semibold">
+
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
               Email
             </label>
             <input
@@ -204,14 +198,14 @@ function Signup() {
               required
               type="email"
               name="email"
-              className="input input-bordered w-full max-w-xs"
-              placeholder="enter your Email..."
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              placeholder="Enter your email..."
               id="email"
             />
           </div>
 
-          <div className="flex flex-col gap-1">
-            <label htmlFor="password" className="font-semibold">
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
               Password
             </label>
             <input
@@ -220,17 +214,22 @@ function Signup() {
               required
               type="password"
               name="password"
-              className="input input-bordered w-full max-w-xs"
-              placeholder="enter your Password..."
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              placeholder="Enter your password..."
               id="password"
             />
           </div>
-          <button type="submit" className="mt-2 btn btn-success">
+
+          <button
+            type="submit"
+            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
             Create Account
           </button>
         </form>
       </div>
-    </Layout>
+    </div>
+  </Layout>
   );
 }
 
