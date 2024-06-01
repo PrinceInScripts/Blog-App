@@ -14,7 +14,7 @@ function AddBlog() {
 
   const [userInput, setUserInput] = useState({
     title: "",
-    content: "",
+    content: "", 
     category: "",
     image: "",
     preViewImage: "",
