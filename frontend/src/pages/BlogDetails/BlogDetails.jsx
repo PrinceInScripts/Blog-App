@@ -7,6 +7,7 @@ import { nanoid } from "@reduxjs/toolkit";
 import { getBlogComments } from "../../redux/slice/commentSlice";
 import { getLikedBlogs } from "../../redux/slice/blogLikeSlice";
 import { useDispatch } from "react-redux";
+import { FaArrowLeft } from "react-icons/fa";
 
 function formatTime(time) {
   const date = new Date(time);
@@ -41,18 +42,19 @@ function BlogDetails() {
 
   return (
     <Layout>
-      <Link
-        to="#"
-        onClick={(e) => {
-          e.preventDefault();
-          navigate(-1);
-        }}
-        className="relative left-40 text-2xl link text-accent cursor-pointer"
-      >
-        <AiOutlineArrowLeft />
-      </Link>
+      
+      
       <div className="min-h-[90vh] flex flex-col gap-5 items-center py-10 justify-center w-3/4 m-auto">
-        <div className="lg:text-4xl w-full font-bold font-serif">
+      <Link
+            onClick={(e) => {
+              e.preventDefault();
+              navigate(-1);
+            }}
+            className="absolute top-20 left-48 text-2xl link text-primary cursor-pointer"
+          >
+          <div className="flex justify-center items-center gap-2  text-xl font-bold font-serif py-10"><FaArrowLeft className="text-xl font-bold"/> Go Back</div>
+          </Link>
+        <div className="lg:text-4xl w-full font-bold mt-20 font-serif">
           <h1>{state?.title}</h1>
         </div>
 

@@ -105,7 +105,7 @@ function BlogCard({ blog }) {
 
     return (
         
-        <div className="w-full bg-white p-6 rounded-lg shadow-lg flex items-start space-x-4">
+        <div className="w-full bg-base-100 p-6 rounded-lg shadow-lg flex items-start space-x-4">
             <img src={blog.author.avatar} alt="Author" className="w-12 h-12 rounded-full object-cover" />
             <div className="flex-1">
                 <div className="flex justify-between items-center mb-4">
