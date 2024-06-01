@@ -26,7 +26,7 @@ const likeBlog=asyncHandler(async (req,res)=>{
         likedBy:userId
     })
 
-    
+    await blog.like(newLike._id);
 
     return res
               .status(200)
