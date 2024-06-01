@@ -30,14 +30,6 @@ export const getAllBlogs = createAsyncThunk("blog/getAllBlog", async () => {
     try {
         const response = axiosInstance.get("/blog")
 
-        toast.promise(response, {
-            loading: "Wait! feching blogs",
-            success: (data) => {
-                return data?.data?.message;
-            },
-            error: 'Faild to load blogs'
-        })
-
         return (await response).data
     } catch (error) {
         toast.error(error?.response?.data?.message)

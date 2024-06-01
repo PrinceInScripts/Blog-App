@@ -42,12 +42,7 @@ function Navbar() {
             <div>
               <Link to={"/add-blog"}><button className="btn btn-active btn-secondary"><CiEdit className="text-white text-2xl" style={{ strokeWidth: 1 }} /> <span className='text-2xl font-bold'>Write</span> </button></Link>
             </div>
-            {/* <div className=" lg:flex hidden gap-2">
-            <input type="text" placeholder="Type here" className="input input-bordered input-primary w-full max-w-xs" />
-            <button className="btn btn-outline btn-primary">
-            <FaSearch />
-            </button>
-            </div> */}
+            
           <div className="dropdown dropdown-end">
             <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
               <div className="w-10 h-10 rounded-full">
