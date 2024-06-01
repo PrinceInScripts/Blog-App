@@ -6,7 +6,9 @@ import { addBlog } from "../../redux/slice/blogSlice";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import { FaUpload } from "react-icons/fa";
+import { FaArrowLeft, FaUpload } from "react-icons/fa";
+import toast from "react-hot-toast";
+
 
 function AddBlog() {
   const dispatch = useDispatch();
@@ -14,10 +16,11 @@ function AddBlog() {
 
   const [userInput, setUserInput] = useState({
     title: "",
-    content: "", 
+    content: "",
     category: "",
     image: "",
     preViewImage: "",
+    isFeatured: false,
   });
 
   function handleUserInput(e) {
@@ -47,22 +50,21 @@ function AddBlog() {
 
   async function onFormSubmit(e) {
     e.preventDefault();
-  
 
-    if( !userInput.title){
-      toast.error("title is required");
+    if (!userInput.title) {
+      toast.error("Title is required");
       return;
     }
-    if( !userInput.content){
-      toast.error("content is required");
+    if (!userInput.content || userInput.content.length < 250) {
+      toast.error("Content must be at least 250 characters");
       return;
     }
-    if(!userInput.category ){
-      toast.error("category is required");
+    if (!userInput.category) {
+      toast.error("Category is required");
       return;
     }
-    if(  !userInput.image){
-      toast.error("image is required");
+    if (!userInput.image) {
+      toast.error("Image is required");
       return;
     }
 
@@ -77,6 +79,7 @@ function AddBlog() {
     formData.append("content", plainTextContent);
     formData.append("category", userInput.category);
     formData.append("image", userInput.image);
+    // formData.append("isFeatured", userInput.isFeatured);
 
     const response = await dispatch(addBlog(formData));
 
@@ -90,6 +93,7 @@ function AddBlog() {
       category: "",
       image: "",
       preViewImage: "",
+      isFeatured: false,
     });
   }
 
@@ -102,11 +106,11 @@ function AddBlog() {
         >
           <Link
             onClick={() => navigate(-1)}
-            className="absolute top-20 text-2xl link text-accent cursor-pointer"
+            className="absolute top-20 text-2xl link text-primary cursor-pointer"
           >
-            <AiOutlineArrowLeft />
+          <div className="flex justify-center items-center gap-2  text-xl font-bold font-serif py-10"><FaArrowLeft className="text-xl font-bold"/> Go Back</div>
           </Link>
-          <div className="w-full">
+          <div className="w-full mt-20">
             <input
               placeholder="Title"
               className="input input-bordered w-full max-w-5xl"
@@ -143,7 +147,6 @@ function AddBlog() {
               }}
             />
           </div>
-
           <div>
             <label
               htmlFor="image_uploads"
@@ -152,13 +155,13 @@ function AddBlog() {
               {userInput?.preViewImage ? (
                 <img
                   src={userInput?.preViewImage}
-                  className=" w-full h-60 m-auto  border"
+                  className="w-full h-60 m-auto border"
                 />
               ) : (
                 <div className="w-full h-60 m-auto flex flex-col items-center justify-center border">
                   <FaUpload />
                   <p className="">
-                    Include a high-qulaity image in your blog to
+                    Include a high-quality image in your blog to
                     <br /> make it more inviting to readers
                   </p>
                 </div>
@@ -173,7 +176,19 @@ function AddBlog() {
               name="image_uploads"
             />
           </div>
-
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              name="isFeatured"
+              id="isFeatured"
+              checked={userInput.isFeatured}
+              onChange={(e) => setUserInput({
+                ...userInput,
+                isFeatured: e.target.checked,
+              })}
+            />
+            <label htmlFor="isFeatured">Feature this blog</label>
+          </div>
           <div className="w-full">
             <button type="submit" className="btn w-full btn-info">
               Publish
